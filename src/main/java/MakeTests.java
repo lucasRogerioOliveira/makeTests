@@ -5,17 +5,10 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
-
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ObjectNode;
 
 
 public class MakeTests {
@@ -26,13 +19,14 @@ public class MakeTests {
 	private final static String ESP2 = "        "; //2*4
 	//	private final static String ESP3 = "            "; //3*4
 
-	public static void makeAllTestsWith(Object object) throws IOException{
+	public static void makeAllTestsWith(Object object) throws IOException, IllegalArgumentException, IllegalAccessException{
 		Class<?> clazz = object.getClass();
 		StringBuilder sb = new StringBuilder();
-		String cn = clazz.getName().substring(clazz.getName().indexOf(".") + 1);
+		String cn = clazz.getName().substring(clazz.getName().lastIndexOf(".") + 1);
 		String lcn = cn.toLowerCase();
 		String setters = makeSetters(object, null);
-		sb.append("package " + getPackage(cn) + ";\n");
+		String packageName = object.getClass().getPackage().getName();
+		sb.append("package " + packageName + ";\n");
 		sb.append(getImports());
 		sb.append("\n\n");
 		sb.append("public class " + cn + "Tests {\n\n\n");
@@ -41,7 +35,14 @@ public class MakeTests {
 		sb.append(ESP + "public void beforeTest(){\n");
 		sb.append(setters);
 		sb.append(ESP + "}\n\n");
-		for (Method m : clazz.getDeclaredMethods()){
+		sb.append(getMethods(clazz.getDeclaredMethods(), lcn));
+		sb.append("}\n");	
+		saveOrUpdateFile(sb, packageName, cn);
+	}
+
+	public static String getMethods(Method[] methods, String objectName){
+		StringBuilder sb = new StringBuilder();
+		for (Method m : methods){
 			String rtn = m.getReturnType().getName(); // return type name
 			if (!rtn.equals("void")) {
 				sb.append(ESP + "@Test\n");
@@ -49,29 +50,29 @@ public class MakeTests {
 				if(!Modifier.isStatic(m.getModifiers())){
 					//					sb.append(ESP2 + cn + " " + lcn + " = new " + cn + "();\n");
 					//					sb.append(setters);
-					sb.append(ESP2 + rtn + " actual = " + lcn + "." + m.getName() + "(" + getParametersTypeStr(m)  + ");\n");
+					sb.append(ESP2 + rtn + " actual = " + objectName + "." + m.getName() + "(" + getParametersTypeStr(m)  + ");\n");
 					sb.append(ESP2 + "//make your asserts here :)\n");
 				}
 				sb.append(ESP +"}\n\n");
 			}
 		}
-		sb.append("}\n");
-		saveOrUpdateFile(sb, cn);
+		return sb.toString();		
 	}
 
 	public static String getImports(){
 		StringBuilder sb = new StringBuilder("import org.junit.Test;\n");
 		sb.append("import org.junit.Before;\n");
-		sb.append("import org.junit.BeforeClass;\n");
+		//		sb.append("import org.junit.BeforeClass;\n");
 		for(String imp : imports){
 			sb.append("import " + imp + ";\n");
 		}
 		return sb.toString();
 	}
 
-	public static boolean saveOrUpdateFile(StringBuilder sb, String className) throws IOException{
+	public static boolean saveOrUpdateFile(StringBuilder sb, String packageName, String className) throws IOException{
 		//		String path = MakeTests.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		String pathStr = MakeTests.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("target", "src/test/java");
+		pathStr = pathStr.substring(0,pathStr.indexOf("src/test/java") + 13) + "/" + packageName.replace(".", "/") + "/";
 		//		String path = System.getProperty("user.dir") + "src\test\java";
 		File f = new File(pathStr);
 		if (!f.exists()){
@@ -87,97 +88,116 @@ public class MakeTests {
 		return true;
 	}
 
-	public static String getPackage(String className){
-		String path = MakeTests.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		return path.substring(path.indexOf("target") + 7, path.length()-1);
-	}
-
-	public static String makeSetters(Object object, String nameObj){
+	public static String makeSetters(Object object, String nameObj) throws IllegalArgumentException, IllegalAccessException{
 		StringBuilder sb = new StringBuilder();
 		Class<?> clazz = object.getClass();
 		if (nameObj == null){ 
 			nameObj = getClassName(clazz).toLowerCase();
 		}
+		if (object.getClass().getName().equals("[Ljava.util.HashMap$Node")){
+			System.out.println(object.getClass().getName());
+		}
 		imports.add(object.getClass().getName());
 		for(Field f : clazz.getDeclaredFields()){
-			try {
-				f.setAccessible(true);
-				if(!java.lang.reflect.Modifier.isStatic(f.getModifiers())){
-					if (f.getType().equals(String.class)){
-						sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + '"' + f.get(object)  + '"' + ");\n");
-					} else if (f.getType().isEnum()) {
-						sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + f.getType().getName() + "." + f.get(object)  + ");\n");
-					} else if (f.getType().equals(List.class)){
-						if (!f.get(object).toString().equals("[]")){
-							List<?> list = (List<?>)f.get(object);
-							if(list.size() > 0){
-								String listName = (f.getName() + (++numberOfRecursons).toString()).toLowerCase(); 
-								String fieldName = "";
-								String className = getClassName(list.get(0).getClass());
-								imports.add("java.util.List");
-								imports.add("java.util.ArrayList");
-								sb.append(ESP2 + "List<" + className  + "> " + listName + " = new ArrayList<" + className + ">();\n");
-								for(Object objOfList : list){
-									fieldName = (getClassName(list.get(0).getClass()) + (++numberOfRecursons).toString()).toLowerCase();
-									sb.append(ESP2 + className + " " + fieldName + " = new " + className + "();\n");
-									sb.append(makeSetters(objOfList, fieldName));
-									sb.append(ESP2 + listName + ".add(" + fieldName + ");\n");
-									sb.append("\n");
-								}
-							}
-						}
-
-					} else if (!isBasicTypes(f)){
-						if (f.get(object) != null){
-							String fieldClassName = f.get(object).getClass().getName().substring(f.get(object).getClass().getName().indexOf(".") + 1);
-							if(!fieldClassName.equals(capitalize(nameObj))){
-								sb.append("\n" + ESP2 + fieldClassName + " " + fieldClassName.toLowerCase() + " = new " + fieldClassName + "();\n");
-								sb.append(makeSetters(f.get(object), fieldClassName.toLowerCase()));
-								sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName() + "(" + fieldClassName.toLowerCase()  + ");\n\n"));
-							} else {
-								sb.append("\n" + ESP2 + fieldClassName + " " + fieldClassName.toLowerCase() + (++numberOfRecursons).toString() + " = new " + fieldClassName + "();\n");
-								sb.append(makeSetters(f.get(object), nameObj + (numberOfRecursons).toString()));
-								sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName() + "(" + fieldClassName.toLowerCase() + (numberOfRecursons).toString() + ");\n\n"));
-							}
-						}
-					} else {
-						sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + f.get(object) + ");\n");
-					}
-				}
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+			f.setAccessible(true);
+			sb.append(buildWithTypeOfObject(f.getType(), f, object, nameObj));
 		}
 		return sb.toString();
 	}
 
-	public static String makeSettersWichJson(Object object, String nameObj){
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			mapper.writeValueAsString(object);
-			JsonNode jsonNode = mapper.valueToTree(object);
-			if (jsonNode.isObject()) {
-				ObjectNode jsonObj = (ObjectNode) jsonNode; 
-				Iterator<Entry<String,JsonNode>> iterator = jsonObj.getFields();
-				while (iterator.hasNext()) {
-					Entry<String,JsonNode> obj = iterator.next();
-					obj = obj;
+	private static String buildWithTypeOfObject(Class<?> clazz, Field f, Object object, String nameObj) throws IllegalArgumentException, IllegalAccessException{
+		StringBuilder sb = new StringBuilder();
+		//		if(!java.lang.reflect.Modifier.isStatic(f.getModifiers()))
+		if (clazz.equals(String.class)){
+			sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + '"' + f.get(object)  + '"' + ");\n");
+		} else if (clazz.isEnum()) {
+			sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + f.getType().getName() + "." + f.get(object)  + ");\n");
+		} else if (Arrays.asList(clazz.getInterfaces()).contains(Collection.class)){
+			Collection<?> collection = (Collection<?>) f.get(object);
+			if (collection != null && !collection.isEmpty()){
+				String listName = (f.getName() + (++numberOfRecursons).toString()).toLowerCase(); 
+				String fieldName = "";
+				String className = "";
+				imports.add("java.util.List");
+				imports.add("java.util.ArrayList");
+				String typeOfList = getTypeOfList(collection).getName(); 
+				sb.append(ESP2 + "List<" + typeOfList + ">" + listName + " = new ArrayList<" + typeOfList + ">();\n");
+				for(Object objOfList : collection){
+					className = objOfList.getClass().getName();
+					fieldName = (getClassName(objOfList.getClass()) + (++numberOfRecursons).toString()).toLowerCase();
+					if (objOfList.getClass().equals(String.class) || objOfList.getClass().equals(char.class) ){
+						sb.append(ESP2 + listName + ".add(" + '"' + objOfList  + '"' + ");\n");
+					} else if(isBasicTypes(objOfList.getClass())) {
+						sb.append(ESP2 + listName + ".add(" + objOfList + ");\n");
+					} else {
+						sb.append(ESP2 + className + " " + fieldName + " = new " + className + "();\n");
+						sb.append(makeSetters(objOfList, fieldName));
+						sb.append(ESP2 + listName + ".add(" + fieldName + ");\n");
+					}
 				}
-
-			}			 
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+				sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName() + "(" + listName + ");\n\n"));
+				sb.append("\n");
+			}
+			//			} else if (f.getType().equals(Map.class)){
+			//				if (f.get(object) != null){
+			//					Map<?,?> map = (Map<?,?>)f.get(object);
+			//					if(map.size() > 0){
+			//						Object key = map.keySet().toArray()[0].getClass();
+			//						Object value = map.get(map.keySet().toArray()[0]).getClass();
+			//						String keyName = getClassName(key.getClass());
+			//						String valueName = getClassName(value.getClass());
+			//						sb.append(ESP2 + "Map<" + keyName + "," + valueName + "> map" + (++numberOfRecursons).toString() + " = new " + map.getClass().getName() + "<" + keyName + "," + valueName + ">();\n");
+			//						for(Entry<?, ?> e : map.entrySet()){
+			//							Object k = e.getKey();
+			//							String kNameClass = getClassName(k.getClass()); 
+			//							String kNameObj = getClassName(k.getClass()).toLowerCase() + (++numberOfRecursons).toString();
+			//							sb.append(ESP2 + kNameClass + " " + kNameObj + " = new " + kNameClass);
+			//							Object v = e.getValue();
+			//						}							
+			//						
+			//						System.out.println(nameObj + " Map");
+			//					}
+			//				}
+			//				
+			//			} else if (f.getType().equals(Set.class)){
+			//				if (f.get(object) != null){
+			//					System.out.println(nameObj + " Set");
+			//				}
+		} else if (!isBasicTypes(clazz)){
+			if (f.get(object) != null){
+				String filedClassNameAndPackage = f.get(object).getClass().getName(); 
+				String fieldClassName = filedClassNameAndPackage.substring(filedClassNameAndPackage.lastIndexOf(".") + 1);
+				if(!fieldClassName.equals(capitalize(nameObj))){
+					sb.append("\n" + ESP2 + filedClassNameAndPackage + " " + fieldClassName.toLowerCase() + " = new " + filedClassNameAndPackage + "();\n");
+					sb.append(makeSetters(f.get(object), fieldClassName.toLowerCase()));
+					sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName() + "(" + fieldClassName.toLowerCase()  + ");\n\n"));
+				} else {
+					sb.append("\n" + ESP2 + filedClassNameAndPackage + " " + fieldClassName.toLowerCase() + (++numberOfRecursons).toString() + " = new " + filedClassNameAndPackage + "();\n");
+					sb.append(makeSetters(f.get(object), nameObj + (numberOfRecursons).toString()));
+					sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName() + "(" + fieldClassName.toLowerCase() + (numberOfRecursons).toString() + ");\n\n"));
+				}
+			}
+		} else {
+			sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + f.get(object) + ");\n");
 		}
-		return mapper.toString();
+		return sb.toString();
+
+	}
+	
+	public static Class<?> getTypeOfList(Collection<?> collection){
+		Set<Class<?>> set = new HashSet<Class<?>>();
+		for (Object o  : collection){
+			set.add(o.getClass());
+			if (set.size() > 1){
+				return Object.class;
+			}
+		}
+		return collection.toArray()[0].getClass();
 	}
 
-	private static Boolean isBasicTypes(Field f){
-		return f.getType().equals(String.class) || f.getType().equals(Integer.class) || f.getType().equals(Boolean.class) 
-				|| f.getType().equals(Double.class) || f.getType().equals(Float.class); 
+	private static Boolean isBasicTypes(Class<?> clazz){
+		return clazz.equals(String.class) || clazz.equals(Integer.class) || clazz.equals(Boolean.class) 
+				|| clazz.equals(Double.class) || clazz.equals(Float.class) || clazz.isPrimitive(); 
 	}
 
 	public static String getParametersTypeStr(Method method){
@@ -194,19 +214,6 @@ public class MakeTests {
 
 	private static String capitalize(String line){
 		return Character.toUpperCase(line.charAt(0)) + line.substring(1);
-	}
-
-	private static String joinStringArray(String[] strings){
-		StringBuilder builder = new StringBuilder();
-
-		for (String string : strings) {
-			if (builder.length() > 0) {
-				builder.append(" ");
-			}
-			builder.append(string);
-		}
-
-		return builder.toString();
 	}
 
 }

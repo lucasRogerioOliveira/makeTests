@@ -1,13 +1,20 @@
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import classes.Car;
+import classes.bar.Bar;
+import classes.car.Car;
+import classes.foo.Foo;
+import classes.gear.Gear;
 import enuns.Color;
-import gear.Gear;
 
 public class MakeTestsTests {
 	
@@ -20,6 +27,34 @@ public class MakeTestsTests {
 		car.setName("Carro");
 		car.setPrice(22.11);
 		car.setNumberWeels(4);
+		
+		List<Object> listObject = new ArrayList<Object>();
+		
+		listObject.add(new Gear());
+		listObject.add(new String("abacate"));
+		listObject.add(new Integer(42));
+		car.setWhatever(listObject);
+		
+		Map<Foo,Bar> fooBar = new HashMap<Foo, Bar>();
+		Foo foo1 = new Foo();
+		foo1.setTicarica("ticaricatica");
+		Bar bar1 = new Bar();
+		bar1.setId(1);
+		bar1.setDescription("zé venancio");
+		bar1.setDate(new Date(5555245L));
+		
+		fooBar.put(new Foo(), new Bar());
+		fooBar.put(foo1, bar1);
+		car.setFooBar(fooBar);
+		
+		Set<Foo> fooSet = new HashSet<Foo>();
+		
+		Foo foo2 = new Foo();
+		foo2.setTicarica("curupaaaaco! kk");
+		
+		fooSet.add(new Foo());
+		fooSet.add(foo2);
+		car.setFooSet(fooSet);
 		
 		Car car2 = new Car();
 		car2.setColor(Color.Red);
@@ -50,7 +85,7 @@ public class MakeTestsTests {
 	}
 	
 	@Test
-	public void makeSetters(){
+	public void makeSetters() throws IllegalArgumentException, IllegalAccessException{
 		MakeTests.makeSetters(car, null);	
 	}
 

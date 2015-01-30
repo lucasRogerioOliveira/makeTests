@@ -1,4 +1,4 @@
-package gear;
+package classes.gear;
 
 public class Gear {
 	

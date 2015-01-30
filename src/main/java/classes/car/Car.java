@@ -1,10 +1,18 @@
-package classes;
+package classes.car;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import javafx.util.Pair;
+import mymap.MyMap;
+import sun.misc.Queue;
+import classes.bar.Bar;
+import classes.foo.Foo;
+import classes.gear.Gear;
 import enuns.Color;
-import gear.Gear;
 
 public class Car {
 	
@@ -17,6 +25,12 @@ public class Car {
 	private Car car;
 	private Gear gear;
 	private List<Gear> gears = new LinkedList<Gear>();
+	private List<Object> whatever = new ArrayList<Object>();
+	private Pair<Foo, Bar> pair = new Pair<Foo, Bar>(null, null);
+	private Queue<Bar> queue = new Queue<Bar>();
+	private Map<Foo, Bar> fooBar;
+	private Set<Foo> fooSet;
+	private MyMap<Foo,Bar,Object,Integer> myMap = new MyMap<Foo,Bar,Object,Integer>();
 	
 	//Getters and Setters...
 	
@@ -71,8 +85,43 @@ public class Car {
 	public List<Gear> getGears() {
 		return gears;
 	}
+	public void setWhatever(List<Object> whatever){
+		this.whatever = whatever;
+	}
+	public List<Object> getWhatever() {
+		return whatever;
+	}	
 	public void setGears(List<Gear> gears) {
 		this.gears = gears;
+	}
+	private Map<Foo, Bar> getFooBar(){
+		return fooBar;
+	}
+	public void setFooBar(Map<Foo, Bar> fooBar){
+		this.fooBar = fooBar;
+	};
+	public Set<Foo> getFooSet(){
+		return fooSet;
+	};
+	public void setFooSet(Set<Foo> fooSet){
+		this.fooSet = fooSet; 
+	}
+	public Pair<Foo, Bar> getPair(){
+		return pair; 
+	}
+	public void setPair(Pair<Foo, Bar> pair){
+		this.pair = pair;
+	}
+	public Queue<Bar> getQueue(){
+		return queue;
+	}
+	public void setQueue(Queue<Bar> queue){
+		this.queue = queue;
+	}
+	public MyMap<Foo, Bar, Object, Integer> getMyMap() {
+		return myMap;
+	}
+	public void setMyMap(MyMap<Foo, Bar, Object, Integer> myMap) {
+		this.myMap = myMap;
 	}	
-	
 }
