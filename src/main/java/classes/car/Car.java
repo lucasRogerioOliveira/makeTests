@@ -1,14 +1,15 @@
 package classes.car;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 import javafx.util.Pair;
-import mymap.MyMap;
-import sun.misc.Queue;
 import classes.bar.Bar;
 import classes.foo.Foo;
 import classes.gear.Gear;
@@ -26,11 +27,13 @@ public class Car {
 	private Gear gear;
 	private List<Gear> gears = new LinkedList<Gear>();
 	private List<Object> whatever = new ArrayList<Object>();
-	private Pair<Foo, Bar> pair = new Pair<Foo, Bar>(null, null);
-	private Queue<Bar> queue = new Queue<Bar>();
+	private Date date = new Date();
+	private Calendar calendar;
+	public Pair<Foo, Bar> pair = new Pair<Foo, Bar>(null, null);
+	private Queue<Bar> queue = new LinkedList<Bar>();
 	private Map<Foo, Bar> fooBar;
 	private Set<Foo> fooSet;
-	private MyMap<Foo,Bar,Object,Integer> myMap = new MyMap<Foo,Bar,Object,Integer>();
+//	private MyMap<Foo,Bar,Object,Integer> myMap = new MyMap<Foo,Bar,Object,Integer>();
 	
 	//Getters and Setters...
 	
@@ -94,12 +97,24 @@ public class Car {
 	public void setGears(List<Gear> gears) {
 		this.gears = gears;
 	}
-	private Map<Foo, Bar> getFooBar(){
+	public Map<Foo, Bar> getFooBar(){
 		return fooBar;
 	}
 	public void setFooBar(Map<Foo, Bar> fooBar){
 		this.fooBar = fooBar;
-	};
+	}
+	public void setDate(Date date){
+		this.date = date; 
+	}
+	public Date getDate(){
+		return date;
+	}
+	public  Calendar getCalendar(){
+		return calendar;
+	}
+	public void setCalendar(Calendar calendar){
+		this.calendar = calendar;
+	}
 	public Set<Foo> getFooSet(){
 		return fooSet;
 	};
@@ -118,10 +133,10 @@ public class Car {
 	public void setQueue(Queue<Bar> queue){
 		this.queue = queue;
 	}
-	public MyMap<Foo, Bar, Object, Integer> getMyMap() {
-		return myMap;
-	}
-	public void setMyMap(MyMap<Foo, Bar, Object, Integer> myMap) {
-		this.myMap = myMap;
-	}	
+//	public MyMap<Foo, Bar, Object, Integer> getMyMap() {
+//		return myMap;
+//	}
+//	public void setMyMap(MyMap<Foo, Bar, Object, Integer> myMap) {
+//		this.myMap = myMap;
+//	}	
 }

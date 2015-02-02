@@ -1,13 +1,21 @@
 package classes.car;
 import org.junit.Test;
 import org.junit.Before;
+import org.junit.Assert;
 import classes.car.Car;
-import java.util.List;
-import [Ljava.util.HashMap$Node;;
+import javafx.util.Pair;
+import java.util.Date;
+import java.util.TimeZone;
 import classes.gear.Gear;
 import classes.foo.Foo;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Calendar;
+import java.util.Map;
+import java.util.LinkedList;
+import classes.bar.Bar;
 
 
 public class CarTests {
@@ -24,74 +32,77 @@ public class CarTests {
         car.setPrice(22.11);
         car.setColor(enuns.Color.Blue);
 
-        classes.car.Car car12 = new classes.car.Car();
-        car12.setSomething("something nice ;)");
-        car12.setName("Trem que pula");
-        car12.setNumberWeels(999);
-        car12.setFlax(true);
-        car12.setPrice(33.44);
-        car12.setColor(enuns.Color.Red);
-        car.setCar(car12);
+        classes.car.Car car1 = new classes.car.Car();
+        car1.setSomething("something nice ;)");
+        car1.setName("Trem que pula");
+        car1.setNumberWeels(999);
+        car1.setFlax(true);
+        car1.setPrice(33.44);
+        car1.setColor(enuns.Color.Red);
+        Date date2 = new Date(1422910532296L);
+        car1.setDate(date2);
+        car.setCar(car1);
 
 
-        classes.gear.Gear gear = new classes.gear.Gear();
-        gear.setNumberOfTeeth(10);
-        gear.setSize(1.1);
-        gear.setSizeFit(15.261);
-        car.setGear(gear);
+        classes.gear.Gear gear4 = new classes.gear.Gear();
+        gear4.setNumberOfTeeth(10);
+        gear4.setSize(1.1);
+        gear4.setSizeFit(15.261);
+        car.setGear(gear4);
 
-        List<classes.gear.Gear>gears13 = new ArrayList<classes.gear.Gear>();
-        classes.gear.Gear gear14 = new classes.gear.Gear();
-        gear14.setNumberOfTeeth(10);
-        gear14.setSize(1.1);
-        gear14.setSizeFit(15.261);
-        gears13.add(gear14);
-        classes.gear.Gear gear15 = new classes.gear.Gear();
-        gear15.setNumberOfTeeth(null);
-        gear15.setSize(null);
-        gear15.setSizeFit(null);
-        gears13.add(gear15);
-        car.setGears(gears13);
+        List<classes.gear.Gear>gears5 = new ArrayList<classes.gear.Gear>();
+        classes.gear.Gear gear6 = new classes.gear.Gear();
+        gear6.setNumberOfTeeth(10);
+        gear6.setSize(1.1);
+        gear6.setSizeFit(15.261);
+        gears5.add(gear6);
+        classes.gear.Gear gear7 = new classes.gear.Gear();
+        gears5.add(gear7);
+        car.setGears(gears5);
 
 
-        List<java.lang.Object>whatever16 = new ArrayList<java.lang.Object>();
-        classes.gear.Gear gear17 = new classes.gear.Gear();
-        gear17.setNumberOfTeeth(null);
-        gear17.setSize(null);
-        gear17.setSizeFit(null);
-        whatever16.add(gear17);
-        whatever16.add("abacate");
-        whatever16.add(42);
-        car.setWhatever(whatever16);
+        List<java.lang.Object>whatever8 = new ArrayList<java.lang.Object>();
+        classes.gear.Gear gear9 = new classes.gear.Gear();
+        whatever8.add(gear9);
+        whatever8.add("abacate");
+        whatever8.add(42);
+        car.setWhatever(whatever8);
 
 
-
-        java.util.HashMap hashmap = new java.util.HashMap();
-        hashmap.setSerialVersionUID(362498820763181265);
-        hashmap.setDEFAULT_INITIAL_CAPACITY(16);
-        hashmap.setMAXIMUM_CAPACITY(1073741824);
-        hashmap.setDEFAULT_LOAD_FACTOR(0.75);
-        hashmap.setTREEIFY_THRESHOLD(8);
-        hashmap.setUNTREEIFY_THRESHOLD(6);
-        hashmap.setMIN_TREEIFY_CAPACITY(64);
-
-        [Ljava.util.HashMap$Node; hashmap$node; = new [Ljava.util.HashMap$Node;();
-        hashmap.setTable(hashmap$node;);
-
-        hashmap.setSize(2);
-        hashmap.setModCount(2);
-        hashmap.setThreshold(12);
-        hashmap.setLoadFactor(0.75);
-        car.setFooBar(hashmap);
-
-        List<classes.foo.Foo>fooset20 = new ArrayList<classes.foo.Foo>();
+        Date date12 = new Date(12542200L);
+        car.setDate(date12);
+        //sorry, but a can't get the Locale =(
+        Calendar calendar13 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        car.setCalendar(calendar13);
+        classes.foo.Foo foo15 = new classes.foo.Foo();
+        foo15.setTicarica("it's be end?");
+        classes.bar.Bar bar16 = new classes.bar.Bar();
+        bar16.setId(22);
+        Date date17 = new Date(1422910532295L);
+        bar16.setDate(date17);
+        Pair<classes.foo.Foo,classes.bar.Bar> Pair14 = new Pair<classes.foo.Foo,classes.bar.Bar>(foo15,bar16);
+        car.setPair(Pair14);
+        Map<classes.foo.Foo,classes.bar.Bar> map18 = new java.util.HashMap<classes.foo.Foo,classes.bar.Bar>();
+        classes.foo.Foo foo19 = new classes.foo.Foo();
+        classes.bar.Bar bar20 = new classes.bar.Bar();
+        bar20.setId(0);
+        map18.put(foo19,bar20);
         classes.foo.Foo foo21 = new classes.foo.Foo();
-        foo21.setTicarica("null");
-        fooset20.add(foo21);
-        classes.foo.Foo foo22 = new classes.foo.Foo();
-        foo22.setTicarica("curupaaaaco! kk");
-        fooset20.add(foo22);
-        car.setFooSet(fooset20);
+        foo21.setTicarica("ticaricatica");
+        classes.bar.Bar bar22 = new classes.bar.Bar();
+        bar22.setId(1);
+        bar22.setDescription("zé venancio");
+        Date date23 = new Date(5555245L);
+        bar22.setDate(date23);
+        map18.put(foo21,bar22);
+        car.setFooBar(map18);
+        List<classes.foo.Foo>fooset24 = new ArrayList<classes.foo.Foo>();
+        classes.foo.Foo foo25 = new classes.foo.Foo();
+        foo25.setTicarica("curupaaaaco! kk");
+        fooset24.add(foo25);
+        classes.foo.Foo foo26 = new classes.foo.Foo();
+        fooset24.add(foo26);
+        car.setFooSet(fooset24);
 
 
     }
@@ -99,37 +110,13 @@ public class CarTests {
     @Test
     public void getNameTest(){
         java.lang.String actual = car.getName();
-        //make your asserts here :)
+        Assert.fail("make your asserts here :)");
     }
 
     @Test
-    public void getFooBarTest(){
-        java.util.Map actual = car.getFooBar();
-        //make your asserts here :)
-    }
-
-    @Test
-    public void getFooSetTest(){
-        java.util.Set actual = car.getFooSet();
-        //make your asserts here :)
-    }
-
-    @Test
-    public void getNumberWeelsTest(){
-        java.lang.Integer actual = car.getNumberWeels();
-        //make your asserts here :)
-    }
-
-    @Test
-    public void getColorTest(){
-        enuns.Color actual = car.getColor();
-        //make your asserts here :)
-    }
-
-    @Test
-    public void getGearsTest(){
-        java.util.List actual = car.getGears();
-        //make your asserts here :)
+    public void getDateTest(){
+        java.util.Date actual = car.getDate();
+        Assert.fail("make your asserts here :)");
     }
 
     @Test
@@ -137,33 +124,81 @@ public class CarTests {
     }
 
     @Test
+    public void getNumberWeelsTest(){
+        java.lang.Integer actual = car.getNumberWeels();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
     public void getFlaxTest(){
         java.lang.Boolean actual = car.getFlax();
-        //make your asserts here :)
+        Assert.fail("make your asserts here :)");
     }
 
     @Test
     public void getPriceTest(){
         java.lang.Double actual = car.getPrice();
-        //make your asserts here :)
+        Assert.fail("make your asserts here :)");
     }
 
     @Test
-    public void getCarTest(){
-        classes.car.Car actual = car.getCar();
-        //make your asserts here :)
-    }
-
-    @Test
-    public void getGearTest(){
-        classes.gear.Gear actual = car.getGear();
-        //make your asserts here :)
+    public void getColorTest(){
+        enuns.Color actual = car.getColor();
+        Assert.fail("make your asserts here :)");
     }
 
     @Test
     public void getWhateverTest(){
         java.util.List actual = car.getWhatever();
-        //make your asserts here :)
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getGearsTest(){
+        java.util.List actual = car.getGears();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getFooBarTest(){
+        java.util.Map actual = car.getFooBar();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getFooSetTest(){
+        java.util.Set actual = car.getFooSet();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getGearTest(){
+        classes.gear.Gear actual = car.getGear();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getCalendarTest(){
+        java.util.Calendar actual = car.getCalendar();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getPairTest(){
+        javafx.util.Pair actual = car.getPair();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getQueueTest(){
+        java.util.Queue actual = car.getQueue();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getCarTest(){
+        classes.car.Car actual = car.getCar();
+        Assert.fail("make your asserts here :)");
     }
 
 }

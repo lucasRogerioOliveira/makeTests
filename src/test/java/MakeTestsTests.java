@@ -1,11 +1,16 @@
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
+
+import javafx.util.Pair;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,6 +32,20 @@ public class MakeTestsTests {
 		car.setName("Carro");
 		car.setPrice(22.11);
 		car.setNumberWeels(4);
+		car.setDate(new Date(12542200L));
+		
+		Foo fooPair = new Foo();
+		fooPair.setTicarica("it's be end?");
+		Bar barPair = new Bar();
+		barPair.setDate(new Date());
+		barPair.setId(22);
+		car.setPair(new Pair<Foo,Bar>(fooPair,barPair));
+		
+		Locale locale = new Locale("pt", "BR");
+		TimeZone tz = TimeZone.getTimeZone("GMT");
+		Calendar calendar = Calendar.getInstance(tz, locale);
+		calendar.setTimeInMillis(458755000L);		
+		car.setCalendar(calendar);
 		
 		List<Object> listObject = new ArrayList<Object>();
 		
@@ -84,10 +103,10 @@ public class MakeTestsTests {
 		Car.setSomething("something nice ;)");
 	}
 	
-	@Test
-	public void makeSetters() throws IllegalArgumentException, IllegalAccessException{
-		MakeTests.makeSetters(car, null);	
-	}
+//	@Test
+//	public void makeSetters() throws IllegalArgumentException, IllegalAccessException{
+//		MakeTests.makeSetters(car, null);	
+//	}
 
 	@Test
 	public void makeAllTestsWithTest() {
@@ -99,14 +118,14 @@ public class MakeTestsTests {
 		}
 	}
 	
-	@Test
-	public void makeTestsWithPowerMock(){
-		
-	}
-	
-	@Test
-	public void makeTestsWithMockito(){
-		
-	}
+//	@Test
+//	public void makeTestsWithPowerMock(){
+//		
+//	}
+//	
+//	@Test
+//	public void makeTestsWithMockito(){
+//		
+//	}
 	
 }
