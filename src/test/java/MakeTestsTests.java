@@ -1,4 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,6 +16,7 @@ import java.util.TimeZone;
 
 import javafx.util.Pair;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -37,7 +42,7 @@ public class MakeTestsTests {
 		Foo fooPair = new Foo();
 		fooPair.setTicarica("it's be end?");
 		Bar barPair = new Bar();
-		barPair.setDate(new Date());
+		barPair.setDate(new Date(1555L));
 		barPair.setId(22);
 		car.setPair(new Pair<Foo,Bar>(fooPair,barPair));
 		
@@ -103,29 +108,51 @@ public class MakeTestsTests {
 		Car.setSomething("something nice ;)");
 	}
 	
-//	@Test
-//	public void makeSetters() throws IllegalArgumentException, IllegalAccessException{
-//		MakeTests.makeSetters(car, null);	
-//	}
+	@Test
+	public void makeSetters() throws IllegalArgumentException, IllegalAccessException, IOException{
+		String pathStr = MakeTests.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("target", "src/test/java");
+		pathStr = pathStr.substring(0,pathStr.indexOf("src/test/java") + 13) + "/tocompare/makeSetters.txt";
+		
+		String actual = MakeTests.makeSetters(car, null);
+		String expected = readFile(pathStr);
+		Assert.assertEquals(expected,actual);
+	}
 
 	@Test
-	public void makeAllTestsWithTest() {
-		try {
-			MakeTests.makeAllTestsWith(car);
-//			MakeTests.makeSettersWichJson(car,"");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void makeSettersWithMethodsFalseTest() throws IllegalArgumentException, IllegalAccessException, IOException {
+			String pathStr = MakeTests.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("target", "src/test/java");
+			pathStr = pathStr.substring(0,pathStr.indexOf("src/test/java") + 13) + "/tocompare/makeSettersWithMethodsFalseCar.txt";
+			
+			String actual = MakeTests.makeSettersWith(car, false);
+			String expected = readFile(pathStr);
+			Assert.assertEquals(expected,actual);
 	}
 	
-//	@Test
-//	public void makeTestsWithPowerMock(){
-//		
-//	}
-//	
-//	@Test
-//	public void makeTestsWithMockito(){
-//		
-//	}
+	@Test
+	public void generateMethodsTest() throws IOException{
+		String pathStr = MakeTests.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("target", "src/test/java");
+		pathStr = pathStr.substring(0,pathStr.indexOf("src/test/java") + 13) + "/tocompare/generateMethods.txt";
+		
+		String actual = MakeTests.generateMethods(Arrays.asList(car.getClass().getMethods()), "car");
+		String expected = readFile(pathStr);
+		Assert.assertEquals(expected,actual);
+	}
+	
+	private String readFile(String fileName) throws IOException {
+	    BufferedReader br = new BufferedReader(new FileReader(fileName));
+	    try {
+	        StringBuilder sb = new StringBuilder();
+	        String line = br.readLine();
+
+	        while (line != null) {
+	            sb.append(line);
+	            sb.append("\n");
+	            line = br.readLine();
+	        }
+	        return sb.toString();
+	    } finally {
+	        br.close();
+	    }
+	}
 	
 }

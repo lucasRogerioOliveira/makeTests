@@ -27,7 +27,7 @@ public class Car {
 	private Gear gear;
 	private List<Gear> gears = new LinkedList<Gear>();
 	private List<Object> whatever = new ArrayList<Object>();
-	private Date date = new Date();
+	private Date date = new Date(10L);
 	private Calendar calendar;
 	public Pair<Foo, Bar> pair = new Pair<Foo, Bar>(null, null);
 	private Queue<Bar> queue = new LinkedList<Bar>();

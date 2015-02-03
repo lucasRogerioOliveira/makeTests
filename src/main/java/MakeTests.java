@@ -9,24 +9,31 @@ import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.List;
+
 import javafx.util.Pair;
+
 import org.joda.time.DateTime;
+
+import comparator.FieldComparator;
+import comparator.MethodComparator;
 
 public class MakeTests {
 
 	private static Integer numberOfRecursons = 0;
 	private static Set<String> imports = new HashSet<String>();
 	private static Set<String> statics = new HashSet<String>();
+	private static MethodComparator methodComparator = new MethodComparator();
 	private final static String ESP = "    "; //1*4
 	private final static String ESP2 = "        "; //2*4
 	//	private final static String ESP3 = "            "; //3*4
 
-	public static void makeAllTestsWith(Object object) throws IOException, IllegalArgumentException, IllegalAccessException{
+	public static String makeSettersWith(Object object, boolean withMethodsAsserts) throws IOException, IllegalArgumentException, IllegalAccessException{
 		Class<?> clazz = object.getClass();
 		StringBuilder sb = new StringBuilder();
 		String cn = clazz.getName().substring(clazz.getName().lastIndexOf(".") + 1);
@@ -42,21 +49,24 @@ public class MakeTests {
 		sb.append(ESP + "public void beforeTest(){\n");
 		sb.append(setters);
 		sb.append(ESP + "}\n\n");
-		sb.append(getMethods(clazz.getDeclaredMethods(), lcn));
-		sb.append("}\n");	
+		List<Method> methods = Arrays.asList(clazz.getDeclaredMethods());
+		if (withMethodsAsserts){
+			sb.append(generateMethods(methods, lcn));
+		}
+		sb.append("}\n");
 		saveOrUpdateFile(sb, packageName, cn);
+		return sb.toString();
 	}
 
-	public static String getMethods(Method[] methods, String objectName){
+	public static String generateMethods(List<Method> methods, String objectName){
 		StringBuilder sb = new StringBuilder();
+		Collections.sort(methods, methodComparator);
 		for (Method m : methods){
 			String rtn = m.getReturnType().getName(); // return type name
 			if (!rtn.equals("void")) {
 				sb.append(ESP + "@Test\n");
 				sb.append(ESP + "public void " + m.getName() + "Test(){\n");
 				if(!Modifier.isStatic(m.getModifiers())){
-					//					sb.append(ESP2 + cn + " " + lcn + " = new " + cn + "();\n");
-					//					sb.append(setters);
 					sb.append(ESP2 + rtn + " actual = " + objectName + "." + m.getName() + "(" + getParametersTypeStr(m)  + ");\n");
 					sb.append(ESP2 + "Assert.fail(" + '"' + "make your asserts here :)" + '"' + ");\n");
 				}
@@ -117,7 +127,11 @@ public class MakeTests {
 			nameObj = getClassName(clazz).toLowerCase();
 		}
 		imports.add(object.getClass().getName());
-		for(Field f : clazz.getDeclaredFields()){
+		
+		FieldComparator fieldComparator = new FieldComparator();
+		List<Field> fields = Arrays.asList(clazz.getDeclaredFields());		
+		Collections.sort(fields, fieldComparator);
+		for(Field f : fields){
 			f.setAccessible(true);
 			if (f.get(object) != null){
 				sb.append(buildWithTypeOfObject(f.getType(), f, object, nameObj));

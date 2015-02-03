@@ -1,0 +1,4 @@
+Generate tests to this project;
+MakeTests.getSettersWithMock(Object object);
+MakeTests.makeMyObject(Class clazz); //(with component)
+MakeTests.generateDB2FileWith(Object object);
