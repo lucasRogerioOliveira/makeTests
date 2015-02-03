@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.TimeZone;
 import classes.gear.Gear;
 import classes.foo.Foo;
+import java.util.Set;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,7 +40,7 @@ public class CarTests {
         car1.setFlax(true);
         car1.setPrice(33.44);
         car1.setColor(enuns.Color.Red);
-        Date date2 = new Date(1422910532296L);
+        Date date2 = new Date(1422923231846L);
         car1.setDate(date2);
         car.setCar(car1);
 
@@ -50,7 +51,7 @@ public class CarTests {
         gear4.setSizeFit(15.261);
         car.setGear(gear4);
 
-        List<classes.gear.Gear>gears5 = new ArrayList<classes.gear.Gear>();
+        List<classes.gear.Gear>gears5 = new java.util.LinkedList<classes.gear.Gear>();
         classes.gear.Gear gear6 = new classes.gear.Gear();
         gear6.setNumberOfTeeth(10);
         gear6.setSize(1.1);
@@ -61,7 +62,7 @@ public class CarTests {
         car.setGears(gears5);
 
 
-        List<java.lang.Object>whatever8 = new ArrayList<java.lang.Object>();
+        List<java.lang.Object>whatever8 = new java.util.ArrayList<java.lang.Object>();
         classes.gear.Gear gear9 = new classes.gear.Gear();
         whatever8.add(gear9);
         whatever8.add("abacate");
@@ -78,7 +79,7 @@ public class CarTests {
         foo15.setTicarica("it's be end?");
         classes.bar.Bar bar16 = new classes.bar.Bar();
         bar16.setId(22);
-        Date date17 = new Date(1422910532295L);
+        Date date17 = new Date(1422923231846L);
         bar16.setDate(date17);
         Pair<classes.foo.Foo,classes.bar.Bar> Pair14 = new Pair<classes.foo.Foo,classes.bar.Bar>(foo15,bar16);
         car.setPair(Pair14);
@@ -96,7 +97,7 @@ public class CarTests {
         bar22.setDate(date23);
         map18.put(foo21,bar22);
         car.setFooBar(map18);
-        List<classes.foo.Foo>fooset24 = new ArrayList<classes.foo.Foo>();
+        Set<classes.foo.Foo>fooset24 = new java.util.HashSet<classes.foo.Foo>();
         classes.foo.Foo foo25 = new classes.foo.Foo();
         foo25.setTicarica("curupaaaaco! kk");
         fooset24.add(foo25);
@@ -120,7 +121,57 @@ public class CarTests {
     }
 
     @Test
-    public void getSomethingTest(){
+    public void getCalendarTest(){
+        java.util.Calendar actual = car.getCalendar();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getGearTest(){
+        classes.gear.Gear actual = car.getGear();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getWhateverTest(){
+        java.util.List actual = car.getWhatever();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getFooBarTest(){
+        java.util.Map actual = car.getFooBar();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getQueueTest(){
+        java.util.Queue actual = car.getQueue();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getCarTest(){
+        classes.car.Car actual = car.getCar();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getFooSetTest(){
+        java.util.Set actual = car.getFooSet();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getPairTest(){
+        javafx.util.Pair actual = car.getPair();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getGearsTest(){
+        java.util.List actual = car.getGears();
+        Assert.fail("make your asserts here :)");
     }
 
     @Test
@@ -148,57 +199,7 @@ public class CarTests {
     }
 
     @Test
-    public void getWhateverTest(){
-        java.util.List actual = car.getWhatever();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getGearsTest(){
-        java.util.List actual = car.getGears();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getFooBarTest(){
-        java.util.Map actual = car.getFooBar();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getFooSetTest(){
-        java.util.Set actual = car.getFooSet();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getGearTest(){
-        classes.gear.Gear actual = car.getGear();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getCalendarTest(){
-        java.util.Calendar actual = car.getCalendar();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getPairTest(){
-        javafx.util.Pair actual = car.getPair();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getQueueTest(){
-        java.util.Queue actual = car.getQueue();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getCarTest(){
-        classes.car.Car actual = car.getCar();
-        Assert.fail("make your asserts here :)");
+    public void getSomethingTest(){
     }
 
 }

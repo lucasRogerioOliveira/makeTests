@@ -9,17 +9,13 @@ import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.Map.Entry;
 import java.util.Set;
-
+import java.util.List;
 import javafx.util.Pair;
-
 import org.joda.time.DateTime;
-
 
 public class MakeTests {
 
@@ -120,9 +116,6 @@ public class MakeTests {
 		if (nameObj == null){ 
 			nameObj = getClassName(clazz).toLowerCase();
 		}
-		if (object.getClass().getName().equals("[Ljava.util.HashMap$Node")){
-			System.out.println(object.getClass().getName());
-		}
 		imports.add(object.getClass().getName());
 		for(Field f : clazz.getDeclaredFields()){
 			f.setAccessible(true);
@@ -143,10 +136,11 @@ public class MakeTests {
 		} else if (Arrays.asList(clazz.getInterfaces()).contains(Collection.class)){
 			Collection<?> collection = (Collection<?>) f.get(object);
 			if (collection != null && !collection.isEmpty()){
-				imports.add("java.util.List");
 				String listName = (f.getName() + (++numberOfRecursons).toString()).toLowerCase(); 
-				String typeOfList = getTypeOfCollection(collection).getName(); 
-				sb.append(ESP2 + "List<" + typeOfList + ">" + listName + " = new ArrayList<" + typeOfList + ">();\n");
+				String typeOfList = getTypeOfCollection(collection).getName();
+				String instance = getInterfaceOfCollection(collection);
+				imports.add("java.util." + instance);
+				sb.append(ESP2 + instance + "<" + typeOfList + ">" + listName + " = new " + collection.getClass().getName() +  "<" + typeOfList + ">();\n");
 				for(Object objOfList : collection){
 					String className = objOfList.getClass().getName();
 					String fieldName = (getClassName(objOfList.getClass()) + (++numberOfRecursons).toString()).toLowerCase();
@@ -249,6 +243,18 @@ public class MakeTests {
 			}
 		}
 		return sb.toString();		
+	}
+	
+	public static String getInterfaceOfCollection(Collection<?> collection){
+		if (Arrays.asList(collection.getClass().getInterfaces()).contains(List.class)){
+			return "List";
+		} 
+		if (Arrays.asList(collection.getClass().getInterfaces()).contains(Set.class)){
+			return "Set";			
+		}
+		return "****NOT YET IMPLEMENTED**** type:" + (collection.getClass().getName()) + " \n" +
+			"please, send a message to the developer to him develop on: \n" + 
+			"github: https://github.com/lucasRogerioOliveira/makeTests or in a email: 'lucasoliveiracampos@gmail.com' thanks a lot :D\n";
 	}
 	
 	public static boolean isAlpha(Object obj){
