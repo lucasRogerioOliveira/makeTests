@@ -24,10 +24,8 @@ public class ClassLoaderTests {
 				Class<?> loadedClass = cl.loadClass("Test");
 				System.out.println(loadedClass.getName());
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else{

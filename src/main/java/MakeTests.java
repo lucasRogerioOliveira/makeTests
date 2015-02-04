@@ -11,10 +11,12 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javafx.util.Pair;
 
@@ -22,13 +24,13 @@ import org.joda.time.DateTime;
 
 import comparator.FieldComparator;
 import comparator.MethodComparator;
+import comparator.ObjectComparator;
 
 public class MakeTests {
 
 	private static Integer numberOfRecursons = 0;
 	private static Set<String> imports = new HashSet<String>();
-	private static Set<String> statics = new HashSet<String>();
-	private static MethodComparator methodComparator = new MethodComparator();
+//	private static Set<String> statics = new HashSet<String>();
 	private final static String ESP = "    "; //1*4
 	private final static String ESP2 = "        "; //2*4
 	//	private final static String ESP3 = "            "; //3*4
@@ -60,7 +62,7 @@ public class MakeTests {
 
 	public static String generateMethods(List<Method> methods, String objectName){
 		StringBuilder sb = new StringBuilder();
-		Collections.sort(methods, methodComparator);
+		Collections.sort(methods, new MethodComparator());
 		for (Method m : methods){
 			String rtn = m.getReturnType().getName(); // return type name
 			if (!rtn.equals("void")) {
@@ -128,9 +130,8 @@ public class MakeTests {
 		}
 		imports.add(object.getClass().getName());
 		
-		FieldComparator fieldComparator = new FieldComparator();
 		List<Field> fields = Arrays.asList(clazz.getDeclaredFields());		
-		Collections.sort(fields, fieldComparator);
+		Collections.sort(fields, new FieldComparator());
 		for(Field f : fields){
 			f.setAccessible(true);
 			if (f.get(object) != null){
@@ -155,7 +156,9 @@ public class MakeTests {
 				String instance = getInterfaceOfCollection(collection);
 				imports.add("java.util." + instance);
 				sb.append(ESP2 + instance + "<" + typeOfList + ">" + listName + " = new " + collection.getClass().getName() +  "<" + typeOfList + ">();\n");
-				for(Object objOfList : collection){
+				List<Object> ordenedList = new LinkedList<Object>(collection);
+				Collections.sort(ordenedList, new ObjectComparator());
+				for(Object objOfList : ordenedList){
 					String className = objOfList.getClass().getName();
 					String fieldName = (getClassName(objOfList.getClass()) + (++numberOfRecursons).toString()).toLowerCase();
 //					sb.append(writeBisicInformations(objOfList, fieldName));
@@ -205,6 +208,7 @@ public class MakeTests {
 				String valueName = entry.getValue().getName();
 				String nameMap = "map" + (++numberOfRecursons).toString();
 				sb.append(ESP2 + "Map<" + keyName + "," + valueName + "> " + nameMap +  " = new " + map.getClass().getName() + "<" + keyName + "," + valueName + ">();\n");
+//		        TreeMap<?,?> sortedMap = new TreeMap<Object, Object>(map);
 				for(Entry<?, ?> e : map.entrySet()){
 					Object k = e.getKey();
 					String kObjName = getClassName(k.getClass()).toLowerCase() + (++numberOfRecursons).toString();
