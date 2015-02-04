@@ -15,6 +15,18 @@
 		<version>2.7</version>
 	</dependency>
 	
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.12</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>eu.agrosense.client</groupId>
+		<artifactId>util-javafx</artifactId>
+		<version>14.06-beta</version>
+	</dependency>
+	
   </dependencies>
   
 </project>
