@@ -17,6 +17,7 @@ import enuns.Color;
 
 public class Car {
 	
+	private static int id = 0;
 	private static String something;
 	private String name;
 	private Integer numberWeels;
@@ -34,6 +35,16 @@ public class Car {
 	private Map<Foo, Bar> fooBar;
 	private Set<Foo> fooSet;
 //	private MyMap<Foo,Bar,Object,Integer> myMap = new MyMap<Foo,Bar,Object,Integer>();
+	
+	
+	public Car(){
+		id++;
+	}
+	
+	@Override
+	public int hashCode() {
+		return id;
+	}
 	
 	//Getters and Setters...
 	

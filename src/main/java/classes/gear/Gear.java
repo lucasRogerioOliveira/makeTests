@@ -2,9 +2,20 @@ package classes.gear;
 
 public class Gear {
 	
+	private static int id = 0;
 	private Integer numberOfTeeth;
 	private Double size;
 	private Double sizeFit;
+	
+	
+	public Gear(){
+		id++;
+	}
+	
+	@Override
+	public int hashCode() {
+		return id;
+	}	
 	
 	//Getters and Setters
 	

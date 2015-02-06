@@ -43,7 +43,6 @@ public class MakeTestsTests {
 		fooPair.setTicarica("it's be end?");
 		Bar barPair = new Bar();
 		barPair.setDate(new Date(1555L));
-		barPair.setId(22);
 		car.setPair(new Pair<Foo,Bar>(fooPair,barPair));
 		
 		Locale locale = new Locale("pt", "BR");
@@ -63,7 +62,6 @@ public class MakeTestsTests {
 		Foo foo1 = new Foo();
 		foo1.setTicarica("ticaricatica");
 		Bar bar1 = new Bar();
-		bar1.setId(1);
 		bar1.setDescription("zé venancio");
 		bar1.setDate(new Date(5555245L));
 		

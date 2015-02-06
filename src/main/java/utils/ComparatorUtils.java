@@ -1,4 +1,4 @@
-package comparator;
+package utils;
 
 
 public class ComparatorUtils {
@@ -11,8 +11,7 @@ public class ComparatorUtils {
 		return s1.compareTo(s2) < 0 ? -1 : 1;
 	}
 	
-	public static int compareChar(char c1, char c2){
-		return (c1 < c2 ? -1 : (c1 > c2 ? 1 : 0));
+	public static int compareChar(Character c1, Character c2){
+		return c1.compareTo(c2);
 	}
-	
 }

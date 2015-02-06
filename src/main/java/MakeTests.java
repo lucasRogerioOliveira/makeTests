@@ -23,17 +23,18 @@ import javafx.util.Pair;
 import org.joda.time.DateTime;
 
 import comparator.FieldComparator;
+import comparator.MapComparator;
 import comparator.MethodComparator;
 import comparator.ObjectComparator;
 
 public class MakeTests {
 
+	private static Object objectFather = null;
 	private static Integer numberOfRecursons = 0;
 	private static Set<String> imports = new HashSet<String>();
 //	private static Set<String> statics = new HashSet<String>();
 	private final static String ESP = "    "; //1*4
 	private final static String ESP2 = "        "; //2*4
-	//	private final static String ESP3 = "            "; //3*4
 
 	public static String makeSettersWith(Object object, boolean withMethodsAsserts) throws IOException, IllegalArgumentException, IllegalAccessException{
 		Class<?> clazz = object.getClass();
@@ -75,7 +76,7 @@ public class MakeTests {
 				sb.append(ESP +"}\n\n");
 			}
 		}
-		return sb.toString();		
+		return sb.toString();
 	}
 
 	public static String getImports(){
@@ -124,18 +125,27 @@ public class MakeTests {
 
 	public static String makeSetters(Object object, String nameObj) throws IllegalArgumentException, IllegalAccessException{
 		StringBuilder sb = new StringBuilder();
-		Class<?> clazz = object.getClass();
-		if (nameObj == null){ 
-			nameObj = getClassName(clazz).toLowerCase();
-		}
-		imports.add(object.getClass().getName());
-		
-		List<Field> fields = Arrays.asList(clazz.getDeclaredFields());		
-		Collections.sort(fields, new FieldComparator());
-		for(Field f : fields){
-			f.setAccessible(true);
-			if (f.get(object) != null){
-				sb.append(buildWithTypeOfObject(f.getType(), f, object, nameObj));
+		if (object != null){
+			if (objectFather == null){
+				objectFather = object;
+			}			
+			Class<?> clazz = object.getClass();
+			if (nameObj == null){ 
+				nameObj = getClassName(clazz).toLowerCase();
+			}
+			imports.add(object.getClass().getName());
+			
+			List<Field> fields = Arrays.asList(clazz.getDeclaredFields());		
+			Collections.sort(fields, new FieldComparator());
+			Set<String> methods = getMethodsNames(clazz);
+			for(Field f : fields){
+				f.setAccessible(true);
+				if (f.get(object) != null && methods.contains("set" + capitalize(f.getName()))){
+					sb.append(buildWithTypeOfObject(f.getType(), f, object, nameObj));
+				}
+			}
+			if (object == objectFather){
+				numberOfRecursons = 0;
 			}
 		}
 		return sb.toString();
@@ -143,11 +153,13 @@ public class MakeTests {
 
 	private static String buildWithTypeOfObject(Class<?> clazz, Field f, Object object, String nameObj) throws IllegalArgumentException, IllegalAccessException{
 		StringBuilder sb = new StringBuilder();
+		String setFieldName = "set" + capitalize(f.getName());
+		Set<String> methods = getMethodsNames(clazz);
 //		if(!java.lang.reflect.Modifier.isStatic(f.getModifiers()))
 		if (clazz.equals(String.class) || clazz.equals(char.class)){
-			sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + '"' + f.get(object)  + '"' + ");\n");
+			sb.append(ESP2 + nameObj + "." + setFieldName + "(" + '"' + f.get(object)  + '"' + ");\n");
 		} else if (clazz.isEnum()) {
-			sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + f.getType().getName() + "." + f.get(object)  + ");\n");
+			sb.append(ESP2 + nameObj + "." + setFieldName + "(" + f.getType().getName() + "." + f.get(object)  + ");\n");
 		} else if (Arrays.asList(clazz.getInterfaces()).contains(Collection.class)){
 			Collection<?> collection = (Collection<?>) f.get(object);
 			if (collection != null && !collection.isEmpty()){
@@ -197,7 +209,7 @@ public class MakeTests {
 				if (k != null && v != null){
 					String pairString = "Pair<" + k.getClass().getName() + "," + v.getClass().getName() + ">";
 					sb.append(ESP2 + pairString + " " + namePair + " = new " + pairString + "(" + kObjName +"," + vObjName+ ");\n");
-					sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + namePair + ");\n");
+					sb.append(ESP2 + nameObj + "." + setFieldName + "(" + namePair + ");\n");
 				}
 		} else if (clazz.equals(Map.class)){
 			Map<?,?> map = (Map<?,?>)f.get(object);
@@ -208,8 +220,10 @@ public class MakeTests {
 				String valueName = entry.getValue().getName();
 				String nameMap = "map" + (++numberOfRecursons).toString();
 				sb.append(ESP2 + "Map<" + keyName + "," + valueName + "> " + nameMap +  " = new " + map.getClass().getName() + "<" + keyName + "," + valueName + ">();\n");
-//		        TreeMap<?,?> sortedMap = new TreeMap<Object, Object>(map);
-				for(Entry<?, ?> e : map.entrySet()){
+				MapComparator mc = new MapComparator(map);
+				TreeMap<Object,Object> sortedMap = new TreeMap<Object, Object>(mc);
+				sortedMap.putAll(map);
+				for(Entry<?, ?> e : sortedMap.entrySet()){
 					Object k = e.getKey();
 					String kObjName = getClassName(k.getClass()).toLowerCase() + (++numberOfRecursons).toString();
 					Object v = e.getValue();
@@ -218,13 +232,12 @@ public class MakeTests {
 					sb.append(writeBisicInformations(v, vObjName));
 					sb.append(ESP2 + nameMap + ".put(" + kObjName + "," + vObjName + ");\n");
 				}
-				sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + nameMap + ");\n");
-				System.out.println(nameObj + " Map");
+				sb.append(ESP2 + nameObj + "." + setFieldName + "(" + nameMap + ");\n");
 			}
 		} else if (isDate(clazz) && f.get(object) != null){
 			String nameField = f.getName() + (++numberOfRecursons).toString();
 			sb.append(getDate(f.get(object), nameField) );
-			sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + nameField + ");\n");
+			sb.append(ESP2 + nameObj + "." + setFieldName + "(" + nameField + ");\n");
 		} else if (!isBasicTypes(clazz)){
 			if (f.get(object) != null){
 				String filedClassNameAndPackage = f.get(object).getClass().getName(); 
@@ -232,15 +245,15 @@ public class MakeTests {
 				if(!fieldClassName.equals(capitalize(nameObj))){
 					sb.append("\n" + ESP2 + filedClassNameAndPackage + " " + fieldClassName.toLowerCase() + " = new " + filedClassNameAndPackage + "();\n");
 					sb.append(makeSetters(f.get(object), fieldClassName.toLowerCase()));
-					sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + fieldClassName.toLowerCase()  + ");\n\n");
+					sb.append(ESP2 + nameObj + "." + setFieldName + "(" + fieldClassName.toLowerCase()  + ");\n\n");
 				} else {
 					sb.append("\n" + ESP2 + filedClassNameAndPackage + " " + fieldClassName + " = new " + filedClassNameAndPackage + "();\n");
 					sb.append(makeSetters(f.get(object), fieldClassName));
-					sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + fieldClassName + ");\n\n");
+					sb.append(ESP2 + nameObj + "." + setFieldName + "(" + fieldClassName + ");\n\n");
 				}
 			}
 		} else {
-			sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName()) + "(" + f.get(object) + ");\n");
+			sb.append(ESP2 + nameObj + "." + setFieldName + "(" + f.get(object) + ");\n");
 		}
 		return sb.toString();
 	}
@@ -281,6 +294,22 @@ public class MakeTests {
 	
 	private static boolean isDate(Class<?> clazz){
 		return clazz.equals(java.sql.Date.class) || clazz.equals(java.util.Date.class) || clazz.equals(Calendar.class);
+	}
+	
+	public static boolean getMethodIfExists(Class<?> clazz, String methodName){
+		try {
+			return clazz.getMethod(methodName, (Class<?>[]) null) == null;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public static Set<String> getMethodsNames(Class<?> clazz){
+		Set<String> result = new HashSet<String>();
+		for(Method m : clazz.getMethods()){
+			result.add(m.getName());
+		}
+		return result;
 	}
 	
 	public static String getDate(Object obj, String objName){

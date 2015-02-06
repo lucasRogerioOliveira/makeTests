@@ -5,38 +5,14 @@
     }
 
     @Test
+    public void getCalendarTest(){
+        java.util.Calendar actual = car.getCalendar();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
     public void getCarTest(){
         classes.car.Car actual = car.getCar();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getDateTest(){
-        java.util.Date actual = car.getDate();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getFlaxTest(){
-        java.lang.Boolean actual = car.getFlax();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getGearTest(){
-        classes.gear.Gear actual = car.getGear();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getNameTest(){
-        java.lang.String actual = car.getName();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getPairTest(){
-        javafx.util.Pair actual = car.getPair();
         Assert.fail("make your asserts here :)");
     }
 
@@ -53,32 +29,14 @@
     }
 
     @Test
-    public void getGearsTest(){
-        java.util.List actual = car.getGears();
+    public void getDateTest(){
+        java.util.Date actual = car.getDate();
         Assert.fail("make your asserts here :)");
     }
 
     @Test
-    public void getPriceTest(){
-        java.lang.Double actual = car.getPrice();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getQueueTest(){
-        java.util.Queue actual = car.getQueue();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void hashCodeTest(){
-        int actual = car.hashCode();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void toStringTest(){
-        java.lang.String actual = car.toString();
+    public void getFlaxTest(){
+        java.lang.Boolean actual = car.getFlax();
         Assert.fail("make your asserts here :)");
     }
 
@@ -95,9 +53,49 @@
     }
 
     @Test
-    public void getCalendarTest(){
-        java.util.Calendar actual = car.getCalendar();
+    public void getGearTest(){
+        classes.gear.Gear actual = car.getGear();
         Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getGearsTest(){
+        java.util.List actual = car.getGears();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getNameTest(){
+        java.lang.String actual = car.getName();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getNumberWeelsTest(){
+        java.lang.Integer actual = car.getNumberWeels();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getPairTest(){
+        javafx.util.Pair actual = car.getPair();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getPriceTest(){
+        java.lang.Double actual = car.getPrice();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getQueueTest(){
+        java.util.Queue actual = car.getQueue();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getSomethingTest(){
     }
 
     @Test
@@ -107,12 +105,14 @@
     }
 
     @Test
-    public void getSomethingTest(){
+    public void hashCodeTest(){
+        int actual = car.hashCode();
+        Assert.fail("make your asserts here :)");
     }
 
     @Test
-    public void getNumberWeelsTest(){
-        java.lang.Integer actual = car.getNumberWeels();
+    public void toStringTest(){
+        java.lang.String actual = car.toString();
         Assert.fail("make your asserts here :)");
     }
 

@@ -4,16 +4,20 @@ import java.util.Date;
 
 public class Bar {
 	
-	private int id;
+	private static int id = 0;
 	private String description;
 	private Date date;
 	
-	public int getId() {
+	
+	public Bar(){
+		id++;
+	}
+	
+	@Override
+	public int hashCode() {
 		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+	}	
+	
 	public String getDescription() {
 		return description;
 	}
