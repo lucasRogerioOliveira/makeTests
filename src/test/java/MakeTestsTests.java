@@ -16,6 +16,8 @@ import java.util.TimeZone;
 
 import javafx.util.Pair;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -74,6 +76,8 @@ public class MakeTestsTests {
 		Foo foo2 = new Foo();
 		foo2.setTicarica("curupaaaaco! kk");
 		
+		foo2.setDateTime(new DateTime(222L, DateTimeZone.forID("America/Sao_Paulo")));
+		
 		fooSet.add(new Foo());
 		fooSet.add(foo2);
 		car.setFooSet(fooSet);
@@ -127,6 +131,16 @@ public class MakeTestsTests {
 	}
 	
 	@Test
+	public void makeSettersWithMethodsTrueTest() throws IllegalArgumentException, IllegalAccessException, IOException {
+			String pathStr = MakeTests.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("target", "src/test/java");
+			pathStr = pathStr.substring(0,pathStr.indexOf("src/test/java") + 13) + "/tocompare/makeSettersWithMethodsTrueCar.txt";
+			
+			String actual = MakeTests.makeSettersWith(car, true);
+			String expected = readFile(pathStr);
+			Assert.assertEquals(expected,actual);
+	}
+	
+	@Test
 	public void generateMethodsTest() throws IOException{
 		String pathStr = MakeTests.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("target", "src/test/java");
 		pathStr = pathStr.substring(0,pathStr.indexOf("src/test/java") + 13) + "/tocompare/generateMethods.txt";
@@ -134,6 +148,103 @@ public class MakeTestsTests {
 		String actual = MakeTests.generateMethods(Arrays.asList(car.getClass().getMethods()), "car");
 		String expected = readFile(pathStr);
 		Assert.assertEquals(expected,actual);
+	}
+	
+	@Test
+	public void isBasicTypesStringTest(){
+		Assert.assertTrue(MakeTests.isBasicTypes(String.class)); 		
+	}
+	
+	@Test
+	public void isBasicTypesIntegerTest(){
+		Assert.assertTrue(MakeTests.isBasicTypes(Integer.class)); 		
+	}
+
+	@Test
+	public void isBasicTypesBooleanTest(){
+		Assert.assertTrue(MakeTests.isBasicTypes(Boolean.class)); 		
+	}
+
+	@Test
+	public void isBasicTypesDoubleTest(){
+		Assert.assertTrue(MakeTests.isBasicTypes(Double.class)); 		
+	}
+
+	@Test
+	public void isBasicTypesFloatTest(){
+		Assert.assertTrue(MakeTests.isBasicTypes(Float.class)); 		
+	}
+	
+	@Test
+	public void isBasicTypesIsCharacterTest(){
+		Assert.assertTrue(MakeTests.isBasicTypes(Character.class));
+	}
+
+	@Test
+	public void isBasicTypesIsPrimitiveTest(){
+		Assert.assertTrue(MakeTests.isBasicTypes(int.class));
+	}
+	
+	@Test
+	public void isBasicTypesFalseTest(){
+		Assert.assertFalse(MakeTests.isBasicTypes(Object.class));
+	}
+
+
+	@Test
+	public void isValidClassTrueTest(){
+		Assert.assertTrue(MakeTests.isValidClass("org.junit.Test"));
+	}
+
+	@Test
+	public void isValidClassFalseWithDollarTest(){
+		Assert.assertFalse(MakeTests.isValidClass("org.junit.Test$HashMap"));
+	}	
+	
+	@Test
+	public void isValidClassFalseTest(){
+		Assert.assertFalse(MakeTests.isValidClass("ticarica"));
+	}
+	
+	
+	@Test
+	public void isAlphaStringTest(){
+		Assert.assertTrue(MakeTests.isAlpha("ticarica"));
+	}
+	
+	@Test
+	public void isAlphaCharacterTest(){
+		Assert.assertTrue(MakeTests.isAlpha(new Character('a')));
+	}
+	
+	@Test
+	public void isAlphaCharTest(){
+		Assert.assertTrue(MakeTests.isAlpha('a'));
+	}
+	
+	@Test
+	public void isAlphaFalseTest(){
+		Assert.assertFalse(MakeTests.isAlpha(1));
+	}
+	
+	@Test
+	public void isDateTimeTest(){
+		Assert.assertTrue(MakeTests.isDate(DateTime.class));
+	}
+
+	@Test
+	public void isDateSqlTest(){
+		Assert.assertTrue(MakeTests.isDate(java.sql.Date.class));
+	}
+	
+	@Test
+	public void isDateUtilTest(){
+		Assert.assertTrue(MakeTests.isDate(java.util.Date.class));
+	}
+	
+	@Test
+	public void isDateCalendarTest(){
+		Assert.assertTrue(MakeTests.isDate(Calendar.class));
 	}
 	
 	private String readFile(String fileName) throws IOException {

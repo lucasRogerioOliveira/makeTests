@@ -1,9 +1,12 @@
 package classes.foo;
 
+import org.joda.time.DateTime;
+
 public class Foo {
 	
 	private static int id = 0;
 	private String ticarica;
+	private DateTime dateTime;
 	
 	public Foo(){
 		id++;
@@ -21,7 +24,14 @@ public class Foo {
 	public void setTicarica(String ticarica) {
 		this.ticarica = ticarica;
 	}
-	
+
+	public DateTime getDateTime() {
+		return dateTime;
+	}
+
+	public void setDateTime(DateTime dateTime) {
+		this.dateTime = dateTime;
+	}	
 	
 
 }

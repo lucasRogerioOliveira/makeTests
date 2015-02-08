@@ -154,7 +154,6 @@ public class MakeTests {
 	private static String buildWithTypeOfObject(Class<?> clazz, Field f, Object object, String nameObj) throws IllegalArgumentException, IllegalAccessException{
 		StringBuilder sb = new StringBuilder();
 		String setFieldName = "set" + capitalize(f.getName());
-		Set<String> methods = getMethodsNames(clazz);
 //		if(!java.lang.reflect.Modifier.isStatic(f.getModifiers()))
 		if (clazz.equals(String.class) || clazz.equals(char.class)){
 			sb.append(ESP2 + nameObj + "." + setFieldName + "(" + '"' + f.get(object)  + '"' + ");\n");
@@ -246,10 +245,6 @@ public class MakeTests {
 					sb.append("\n" + ESP2 + filedClassNameAndPackage + " " + fieldClassName.toLowerCase() + " = new " + filedClassNameAndPackage + "();\n");
 					sb.append(makeSetters(f.get(object), fieldClassName.toLowerCase()));
 					sb.append(ESP2 + nameObj + "." + setFieldName + "(" + fieldClassName.toLowerCase()  + ");\n\n");
-				} else {
-					sb.append("\n" + ESP2 + filedClassNameAndPackage + " " + fieldClassName + " = new " + filedClassNameAndPackage + "();\n");
-					sb.append(makeSetters(f.get(object), fieldClassName));
-					sb.append(ESP2 + nameObj + "." + setFieldName + "(" + fieldClassName + ");\n\n");
 				}
 			}
 		} else {
@@ -289,19 +284,12 @@ public class MakeTests {
 	}
 	
 	public static boolean isAlpha(Object obj){
-		return obj.getClass().equals(String.class) || obj.getClass().equals(char.class);
+		return obj.getClass().equals(String.class) || obj.getClass().equals(char.class) || obj.getClass().equals(Character.class);
 	}
 	
-	private static boolean isDate(Class<?> clazz){
-		return clazz.equals(java.sql.Date.class) || clazz.equals(java.util.Date.class) || clazz.equals(Calendar.class);
-	}
-	
-	public static boolean getMethodIfExists(Class<?> clazz, String methodName){
-		try {
-			return clazz.getMethod(methodName, (Class<?>[]) null) == null;
-		} catch (Exception e) {
-			return false;
-		}
+	public static boolean isDate(Class<?> clazz){
+		return clazz.equals(java.sql.Date.class) || clazz.equals(java.util.Date.class) 
+				|| clazz.equals(Calendar.class) || clazz.equals(DateTime.class);
 	}
 	
 	public static Set<String> getMethodsNames(Class<?> clazz){
@@ -326,7 +314,10 @@ public class MakeTests {
 				sb.append(ESP2 + "//sorry, but a can't get the Locale =(\n");
 				sb.append(ESP2 + "Calendar " + objName + " = Calendar.getInstance(TimeZone.getTimeZone(" + '"' + calendar.getTimeZone().getID() + '"' + "));\n");
 			} else if (obj.getClass().equals(DateTime.class)){
-				
+				imports.add("org.joda.time.DateTime");
+				imports.add("org.joda.time.DateTimeZone");
+				DateTime dt = (DateTime)obj;
+				sb.append(ESP2 + "DateTime " + objName + " = new DateTime(" + 	dt.getMillis() + "L, DateTimeZone.forID(" + '"' + dt.getZone().getID()  + '"' + "));\n");
 			}
 		}
 		return sb.toString();
@@ -352,9 +343,10 @@ public class MakeTests {
 		return new AbstractMap.SimpleEntry<Class<?>, Class<?>>(keyType,valueType);
 	}
 	
-	private static Boolean isBasicTypes(Class<?> clazz){
+	public static Boolean isBasicTypes(Class<?> clazz){
 		return clazz.equals(String.class) || clazz.equals(Integer.class) || clazz.equals(Boolean.class) 
-				|| clazz.equals(Double.class) || clazz.equals(Float.class) || clazz.isPrimitive(); 
+				|| clazz.equals(Double.class) || clazz.equals(Float.class) 
+				|| clazz.equals(Character.class) || clazz.isPrimitive(); 
 	}
 
 	public static String getParametersTypeStr(Method method){
