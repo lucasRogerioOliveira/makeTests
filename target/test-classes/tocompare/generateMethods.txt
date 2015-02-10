@@ -65,6 +65,18 @@
     }
 
     @Test
+    public void getGenericClassTest(){
+        classes.genericclass.GenericClass actual = car.getGenericClass();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getGenericClass2Test(){
+        classes.genericclass.GenericClass actual = car.getGenericClass2();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
     public void getNameTest(){
         java.lang.String actual = car.getName();
         Assert.fail("make your asserts here :)");
@@ -96,6 +108,10 @@
 
     @Test
     public void getSomethingTest(){
+    }
+
+    @Test
+    public void getStaticCarTest(){
     }
 
     @Test

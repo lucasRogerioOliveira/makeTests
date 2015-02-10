@@ -26,6 +26,7 @@ import classes.bar.Bar;
 import classes.car.Car;
 import classes.foo.Foo;
 import classes.gear.Gear;
+import classes.genericclass.GenericClass;
 import enuns.Color;
 
 public class MakeTestsTests {
@@ -89,6 +90,13 @@ public class MakeTestsTests {
 		car2.setPrice(33.44);
 		car2.setNumberWeels(999);
 		
+		
+		GenericClass<List<Integer>> gc = new GenericClass<List<Integer>>();
+		gc.setName("test");
+		gc.setPerformance(2.1D);
+		car2.setGenericClass2(gc);
+		car2.setGenericClass(new GenericClass());
+		
 		car.setCar(car2);
 		
 		Gear gear = new Gear();
@@ -108,6 +116,8 @@ public class MakeTestsTests {
 		car.setGears(gears);
 		
 		Car.setSomething("something nice ;)");
+		
+		Car.setStaticCar(car);		
 	}
 	
 	@Test

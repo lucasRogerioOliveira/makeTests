@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.TypeVariable;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -22,6 +23,8 @@ import javafx.util.Pair;
 
 import org.joda.time.DateTime;
 
+import classes.genericclass.GenericClass;
+
 import comparator.FieldComparator;
 import comparator.MapComparator;
 import comparator.MethodComparator;
@@ -32,7 +35,7 @@ public class MakeTests {
 	private static Object objectFather = null;
 	private static Integer numberOfRecursons = 0;
 	private static Set<String> imports = new HashSet<String>();
-//	private static Set<String> statics = new HashSet<String>();
+	private static Set<Object> statics = new HashSet<Object>();
 	private final static String ESP = "    "; //1*4
 	private final static String ESP2 = "        "; //2*4
 
@@ -154,7 +157,13 @@ public class MakeTests {
 	private static String buildWithTypeOfObject(Class<?> clazz, Field f, Object object, String nameObj) throws IllegalArgumentException, IllegalAccessException{
 		StringBuilder sb = new StringBuilder();
 		String setFieldName = "set" + capitalize(f.getName());
-//		if(!java.lang.reflect.Modifier.isStatic(f.getModifiers()))
+		if(java.lang.reflect.Modifier.isStatic(f.getModifiers()) ){
+			if (statics.contains(f)){
+				return "";
+			}
+			statics.add(f);
+			nameObj = object.getClass().getName();
+		}
 		if (clazz.equals(String.class) || clazz.equals(char.class)){
 			sb.append(ESP2 + nameObj + "." + setFieldName + "(" + '"' + f.get(object)  + '"' + ");\n");
 		} else if (clazz.isEnum()) {
@@ -241,8 +250,9 @@ public class MakeTests {
 			if (f.get(object) != null){
 				String filedClassNameAndPackage = f.get(object).getClass().getName(); 
 				String fieldClassName = f.getName() + (++numberOfRecursons).toString();
+				String typesParams = getTypeParameters(f.get(object).getClass());
 				if(!fieldClassName.equals(capitalize(nameObj))){
-					sb.append("\n" + ESP2 + filedClassNameAndPackage + " " + fieldClassName.toLowerCase() + " = new " + filedClassNameAndPackage + "();\n");
+					sb.append("\n" + ESP2 + filedClassNameAndPackage + typesParams +  " " + fieldClassName.toLowerCase() + " = new " + filedClassNameAndPackage + typesParams + "();\n");
 					sb.append(makeSetters(f.get(object), fieldClassName.toLowerCase()));
 					sb.append(ESP2 + nameObj + "." + setFieldName + "(" + fieldClassName.toLowerCase()  + ");\n\n");
 				}
@@ -251,6 +261,18 @@ public class MakeTests {
 			sb.append(ESP2 + nameObj + "." + setFieldName + "(" + f.get(object) + ");\n");
 		}
 		return sb.toString();
+	}
+	
+//	public static String constructObject(Class<?> clazz, Field f,String nameObjParent, String setFieldName, String nameObj){
+//		return ESP2 + (java.lang.reflect.Modifier.isStatic(f.getModifiers()) ?  clazz.getName() : nameObjParent ) + "." + setFieldName + "(" + nameObj  + ");\n";
+//	}
+	
+	public static String getTypeParameters(Class<?> clazz){
+		String result = "";
+		for (int i=0; i < clazz.getTypeParameters().length; i++){
+			result += ",Object"; 
+		}
+		return result == "" ? "" : "<" + result.substring(1) + ">";
 	}
 	
 	public static String writeBisicInformations(Object obj, String objName) throws IllegalArgumentException, IllegalAccessException{
@@ -264,7 +286,8 @@ public class MakeTests {
 			} else if(isDate(obj.getClass())) {
 				sb.append(getDate(obj, objName));
 			} else {
-				sb.append(ESP2 + className + " " + objName + " = new " + className + "();\n");
+				String typesParams = getTypeParameters(obj.getClass());
+				sb.append(ESP2 + className + typesParams + " " + objName + " = new " + className + typesParams + "();\n");
 				sb.append(makeSetters(obj, objName));
 			}
 		}

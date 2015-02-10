@@ -13,11 +13,13 @@ import javafx.util.Pair;
 import classes.bar.Bar;
 import classes.foo.Foo;
 import classes.gear.Gear;
+import classes.genericclass.GenericClass;
 import enuns.Color;
 
 public class Car {
 	
 	private static int id = 0;
+	private static Car staticCar;
 	private static String something;
 	private String name;
 	private Integer numberWeels;
@@ -34,6 +36,8 @@ public class Car {
 	private Queue<Bar> queue = new LinkedList<Bar>();
 	private Map<Foo, Bar> fooBar;
 	private Set<Foo> fooSet;
+	private GenericClass genericClass;
+	private GenericClass<?> genericClass2;
 //	private MyMap<Foo,Bar,Object,Integer> myMap = new MyMap<Foo,Bar,Object,Integer>();
 	
 	
@@ -54,6 +58,13 @@ public class Car {
 	public static void setSomething(String Something) {
 		something = Something;
 	}
+	public static Car getStaticCar() {
+		return staticCar;
+	}
+
+	public static void setStaticCar(Car staticCar) {
+		Car.staticCar = staticCar;
+	}	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -84,6 +95,7 @@ public class Car {
 	public void setColor(Color color) {
 		this.color = color;
 	}
+	
 	public Car getCar() {
 		return car;
 	}
@@ -143,6 +155,22 @@ public class Car {
 	}
 	public void setQueue(Queue<Bar> queue){
 		this.queue = queue;
+	}
+	
+	public GenericClass getGenericClass() {
+		return genericClass;
+	}
+
+	public void setGenericClass(GenericClass genericClass) {
+		this.genericClass = genericClass;
+	}
+	
+	public GenericClass<?> getGenericClass2() {
+		return genericClass2;
+	}
+
+	public void setGenericClass2(GenericClass<?> genericClass2) {
+		this.genericClass2 = genericClass2;
 	}
 //	public MyMap<Foo, Bar, Object, Integer> getMyMap() {
 //		return myMap;
