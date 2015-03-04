@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.TypeVariable;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -19,11 +18,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-import javafx.util.Pair;
-
 import org.joda.time.DateTime;
-
-import classes.genericclass.GenericClass;
 
 import comparator.FieldComparator;
 import comparator.MapComparator;
@@ -198,28 +193,30 @@ public class MakeTests {
 				sb.append(ESP2 + nameObj + ".set" + capitalize(f.getName() + "(" + listName + ");\n\n"));
 				sb.append("\n");
 			}
-		} else if (clazz.equals(Pair.class) && f.get(object) != null){
-				Pair<?,?> pair = (Pair<?,?>)f.get(object);
-				imports.add(clazz.getName());
-				Object k = pair.getKey();
-				Object v = pair.getValue();
-				String kObjName = "null";
-				String vObjName = "null";
-				String namePair = getClassName(pair.getClass()) + (++numberOfRecursons).toString();
-				if (k != null){
-					kObjName = getClassName(k.getClass()).toLowerCase() + (++numberOfRecursons).toString();
-					sb.append(writeBisicInformations(k, kObjName));
-				}
-				if (v != null){
-					vObjName = getClassName(v.getClass()).toLowerCase() + (++numberOfRecursons).toString();
-					sb.append(writeBisicInformations(v, vObjName));
-				}
-				if (k != null && v != null){
-					String pairString = "Pair<" + k.getClass().getName() + "," + v.getClass().getName() + ">";
-					sb.append(ESP2 + pairString + " " + namePair + " = new " + pairString + "(" + kObjName +"," + vObjName+ ");\n");
-					sb.append(ESP2 + nameObj + "." + setFieldName + "(" + namePair + ");\n");
-				}
-		} else if (clazz.equals(Map.class)){
+		} 
+//		else if (clazz.equals(Pair.class) && f.get(object) != null){
+//				Pair<?,?> pair = (Pair<?,?>)f.get(object);
+//				imports.add(clazz.getName());
+//				Object k = pair.getKey();
+//				Object v = pair.getValue();
+//				String kObjName = "null";
+//				String vObjName = "null";
+//				String namePair = getClassName(pair.getClass()) + (++numberOfRecursons).toString();
+//				if (k != null){
+//					kObjName = getClassName(k.getClass()).toLowerCase() + (++numberOfRecursons).toString();
+//					sb.append(writeBisicInformations(k, kObjName));
+//				}
+//				if (v != null){
+//					vObjName = getClassName(v.getClass()).toLowerCase() + (++numberOfRecursons).toString();
+//					sb.append(writeBisicInformations(v, vObjName));
+//				}
+//				if (k != null && v != null){
+//					String pairString = "Pair<" + k.getClass().getName() + "," + v.getClass().getName() + ">";
+//					sb.append(ESP2 + pairString + " " + namePair + " = new " + pairString + "(" + kObjName +"," + vObjName+ ");\n");
+//					sb.append(ESP2 + nameObj + "." + setFieldName + "(" + namePair + ");\n");
+//				}
+//		} 
+		else if (clazz.equals(Map.class)){
 			Map<?,?> map = (Map<?,?>)f.get(object);
 			if(map != null && map.size() > 0){
 				imports.add(clazz.getName());

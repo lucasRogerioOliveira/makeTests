@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import javafx.util.Pair;
 import classes.bar.Bar;
 import classes.foo.Foo;
 import classes.gear.Gear;
@@ -32,7 +31,7 @@ public class Car {
 	private List<Object> whatever = new ArrayList<Object>();
 	private Date date = new Date(10L);
 	private Calendar calendar;
-	public Pair<Foo, Bar> pair = new Pair<Foo, Bar>(null, null);
+//	public Pair<Foo, Bar> pair = new Pair<Foo, Bar>(null, null);
 	private Queue<Bar> queue = new LinkedList<Bar>();
 	private Map<Foo, Bar> fooBar;
 	private Set<Foo> fooSet;
@@ -144,12 +143,12 @@ public class Car {
 	public void setFooSet(Set<Foo> fooSet){
 		this.fooSet = fooSet; 
 	}
-	public Pair<Foo, Bar> getPair(){
-		return pair; 
-	}
-	public void setPair(Pair<Foo, Bar> pair){
-		this.pair = pair;
-	}
+//	public Pair<Foo, Bar> getPair(){
+//		return pair; 
+//	}
+//	public void setPair(Pair<Foo, Bar> pair){
+//		this.pair = pair;
+//	}
 	public Queue<Bar> getQueue(){
 		return queue;
 	}

@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import javafx.util.Pair;
-
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Assert;
@@ -46,7 +44,7 @@ public class MakeTestsTests {
 		fooPair.setTicarica("it's be end?");
 		Bar barPair = new Bar();
 		barPair.setDate(new Date(1555L));
-		car.setPair(new Pair<Foo,Bar>(fooPair,barPair));
+//		car.setPair(new Pair<Foo,Bar>(fooPair,barPair));
 		
 		Locale locale = new Locale("pt", "BR");
 		TimeZone tz = TimeZone.getTimeZone("GMT");
@@ -257,9 +255,6 @@ public class MakeTestsTests {
 	public void isDateCalendarTest(){
 		Assert.assertTrue(MakeTests.isDate(Calendar.class));
 	}
-	
-	@Test
-	public void 
 	
 	private String readFile(String fileName) throws IOException {
 	    BufferedReader br = new BufferedReader(new FileReader(fileName));
