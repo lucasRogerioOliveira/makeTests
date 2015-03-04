@@ -147,7 +147,7 @@ public class MakeTestsTests {
 			
 			String actual = MakeTests.makeSettersWith(car, true);
 			String expected = readFile(pathStr);
-			Assert.assertEquals(expected,actual);
+			Assert.assertEquals(expected, actual);
 	}
 	
 	@Test
@@ -157,6 +157,7 @@ public class MakeTestsTests {
 		
 		String actual = MakeTests.generateMethods(Arrays.asList(car.getClass().getMethods()), "car");
 		String expected = readFile(pathStr);
+
 		Assert.assertEquals(expected,actual);
 	}
 	
@@ -256,6 +257,9 @@ public class MakeTestsTests {
 	public void isDateCalendarTest(){
 		Assert.assertTrue(MakeTests.isDate(Calendar.class));
 	}
+	
+	@Test
+	public void 
 	
 	private String readFile(String fileName) throws IOException {
 	    BufferedReader br = new BufferedReader(new FileReader(fileName));

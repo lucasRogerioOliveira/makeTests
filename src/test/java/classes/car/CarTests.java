@@ -1,25 +1,16 @@
 package classes.car;
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.Assert;
-import classes.car.Car;
-import javafx.util.Pair;
-import org.joda.time.DateTimeZone;
-import java.util.TimeZone;
-import java.util.Date;
-import org.joda.time.DateTime;
-import classes.gear.Gear;
-import classes.foo.Foo;
-import java.util.Set;
-import classes.genericclass.GenericClass;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
-import classes.bar.Bar;
-import java.util.LinkedList;
+import java.util.Set;
+import java.util.TimeZone;
+
+import javafx.util.Pair;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.junit.Before;
 
 
 public class CarTests {

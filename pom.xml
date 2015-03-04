@@ -27,6 +27,20 @@
 		<version>14.06-beta</version>
 	</dependency>
 	
+	<dependency>
+		<groupId>com.h2database</groupId>
+		<artifactId>h2</artifactId>
+		<version>1.4.185</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-entitymanager</artifactId>
+		<version>4.3.8.Final</version>
+	</dependency>
+	
+	
+	
   </dependencies>
   
 </project>
