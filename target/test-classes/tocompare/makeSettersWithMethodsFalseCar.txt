@@ -50,135 +50,56 @@ public class CarTests {
         car2.setName("Trem que pula");
         car2.setNumberWeels(999);
         car2.setPrice(33.44);
-        classes.car.Car.setSomething("something nice ;)");
-
-        classes.car.Car staticcar6 = new classes.car.Car();
-        //sorry, but a can't get the Locale =(
-        Calendar calendar7 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        staticcar6.setCalendar(calendar7);
-
-        classes.car.Car car8 = new classes.car.Car();
-        car8.setColor(enuns.Color.Red);
-        Date date9 = new Date(10L);
-        car8.setDate(date9);
-        car8.setFlax(true);
-
-        classes.genericclass.GenericClass<Object> genericclass10 = new classes.genericclass.GenericClass<Object>();
-        car8.setGenericClass(genericclass10);
-
-
-        classes.genericclass.GenericClass<Object> genericclass211 = new classes.genericclass.GenericClass<Object>();
-        genericclass211.setName("test");
-        genericclass211.setPerformance(2.1);
-        car8.setGenericClass2(genericclass211);
-
-        car8.setName("Trem que pula");
-        car8.setNumberWeels(999);
-        car8.setPrice(33.44);
-        staticcar6.setCar(car8);
-
-        staticcar6.setColor(enuns.Color.Blue);
-        Date date12 = new Date(12542200L);
-        staticcar6.setDate(date12);
-        staticcar6.setFlax(false);
-        Map<classes.foo.Foo,classes.bar.Bar> map13 = new java.util.HashMap<classes.foo.Foo,classes.bar.Bar>();
-        classes.foo.Foo foo14 = new classes.foo.Foo();
-        foo14.setTicarica("ticaricatica");
-        classes.bar.Bar bar15 = new classes.bar.Bar();
-        map13.put(foo14,bar15);
-        staticcar6.setFooBar(map13);
-        Set<classes.foo.Foo>fooset16 = new java.util.HashSet<classes.foo.Foo>();
-        classes.foo.Foo foo17 = new classes.foo.Foo();
-        DateTime dateTime18 = new DateTime(222L, DateTimeZone.forID("America/Sao_Paulo"));
-        foo17.setDateTime(dateTime18);
-        foo17.setTicarica("curupaaaaco! kk");
-        fooset16.add(foo17);
-        classes.foo.Foo foo19 = new classes.foo.Foo();
-        fooset16.add(foo19);
-        staticcar6.setFooSet(fooset16);
-
-
-
-        classes.gear.Gear gear20 = new classes.gear.Gear();
-        gear20.setNumberOfTeeth(10);
-        gear20.setSize(1.1);
-        gear20.setSizeFit(15.261);
-        staticcar6.setGear(gear20);
-
-        List<classes.gear.Gear>gears21 = new java.util.LinkedList<classes.gear.Gear>();
-        classes.gear.Gear gear22 = new classes.gear.Gear();
-        gear22.setNumberOfTeeth(10);
-        gear22.setSize(1.1);
-        gear22.setSizeFit(15.261);
-        gears21.add(gear22);
-        classes.gear.Gear gear23 = new classes.gear.Gear();
-        gears21.add(gear23);
-        staticcar6.setGears(gears21);
-
-
-        staticcar6.setName("Carro");
-        staticcar6.setNumberWeels(4);
-        staticcar6.setPrice(22.11);
-        List<java.lang.Object>whatever24 = new java.util.ArrayList<java.lang.Object>();
-        whatever24.add("abacate");
-        classes.gear.Gear gear26 = new classes.gear.Gear();
-        whatever24.add(gear26);
-        whatever24.add(42);
-        staticcar6.setWhatever(whatever24);
-
-
-        classes.car.Car.setStaticCar(staticcar6);
-
         car.setCar(car2);
 
         car.setColor(enuns.Color.Blue);
-        Date date1 = new Date(12542200L);
-        car.setDate(date1);
+        Date date6 = new Date(12542200L);
+        car.setDate(date6);
         car.setFlax(false);
-        Map<classes.foo.Foo,classes.bar.Bar> map2 = new java.util.HashMap<classes.foo.Foo,classes.bar.Bar>();
-        classes.foo.Foo foo3 = new classes.foo.Foo();
-        foo3.setTicarica("ticaricatica");
-        classes.bar.Bar bar4 = new classes.bar.Bar();
-        map2.put(foo3,bar4);
-        car.setFooBar(map2);
-        Set<classes.foo.Foo>fooset5 = new java.util.HashSet<classes.foo.Foo>();
-        classes.foo.Foo foo6 = new classes.foo.Foo();
-        DateTime dateTime7 = new DateTime(222L, DateTimeZone.forID("America/Sao_Paulo"));
-        foo6.setDateTime(dateTime7);
-        foo6.setTicarica("curupaaaaco! kk");
-        fooset5.add(foo6);
+        Map<classes.foo.Foo,classes.bar.Bar> map7 = new java.util.HashMap<classes.foo.Foo,classes.bar.Bar>();
         classes.foo.Foo foo8 = new classes.foo.Foo();
-        fooset5.add(foo8);
-        car.setFooSet(fooset5);
+        foo8.setTicarica("ticaricatica");
+        classes.bar.Bar bar9 = new classes.bar.Bar();
+        map7.put(foo8,bar9);
+        car.setFooBar(map7);
+        Set<classes.foo.Foo>fooset10 = new java.util.HashSet<classes.foo.Foo>();
+        classes.foo.Foo foo11 = new classes.foo.Foo();
+        DateTime dateTime12 = new DateTime(222L, DateTimeZone.forID("America/Sao_Paulo"));
+        foo11.setDateTime(dateTime12);
+        foo11.setTicarica("curupaaaaco! kk");
+        fooset10.add(foo11);
+        classes.foo.Foo foo13 = new classes.foo.Foo();
+        fooset10.add(foo13);
+        car.setFooSet(fooset10);
 
 
 
-        classes.gear.Gear gear9 = new classes.gear.Gear();
-        gear9.setNumberOfTeeth(10);
-        gear9.setSize(1.1);
-        gear9.setSizeFit(15.261);
-        car.setGear(gear9);
+        classes.gear.Gear gear14 = new classes.gear.Gear();
+        gear14.setNumberOfTeeth(10);
+        gear14.setSize(1.1);
+        gear14.setSizeFit(15.261);
+        car.setGear(gear14);
 
-        List<classes.gear.Gear>gears10 = new java.util.LinkedList<classes.gear.Gear>();
-        classes.gear.Gear gear11 = new classes.gear.Gear();
-        gear11.setNumberOfTeeth(10);
-        gear11.setSize(1.1);
-        gear11.setSizeFit(15.261);
-        gears10.add(gear11);
-        classes.gear.Gear gear12 = new classes.gear.Gear();
-        gears10.add(gear12);
-        car.setGears(gears10);
+        List<classes.gear.Gear>gears15 = new java.util.LinkedList<classes.gear.Gear>();
+        classes.gear.Gear gear16 = new classes.gear.Gear();
+        gear16.setNumberOfTeeth(10);
+        gear16.setSize(1.1);
+        gear16.setSizeFit(15.261);
+        gears15.add(gear16);
+        classes.gear.Gear gear17 = new classes.gear.Gear();
+        gears15.add(gear17);
+        car.setGears(gears15);
 
 
         car.setName("Carro");
         car.setNumberWeels(4);
         car.setPrice(22.11);
-        List<java.lang.Object>whatever13 = new java.util.ArrayList<java.lang.Object>();
-        whatever13.add("abacate");
-        classes.gear.Gear gear15 = new classes.gear.Gear();
-        whatever13.add(gear15);
-        whatever13.add(42);
-        car.setWhatever(whatever13);
+        List<java.lang.Object>whatever18 = new java.util.ArrayList<java.lang.Object>();
+        whatever18.add("abacate");
+        classes.gear.Gear gear20 = new classes.gear.Gear();
+        whatever18.add(gear20);
+        whatever18.add(42);
+        car.setWhatever(whatever18);
 
 
     }

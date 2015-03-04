@@ -1,128 +1,74 @@
-    @Test
-    public void equalsTest(){
-        boolean actual = car.equals(java.lang.Object,);
-        Assert.fail("make your asserts here :)");
-    }
+        //sorry, but a can't get the Locale =(
+        Calendar calendar1 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        car.setCalendar(calendar1);
 
-    @Test
-    public void getCalendarTest(){
-        java.util.Calendar actual = car.getCalendar();
-        Assert.fail("make your asserts here :)");
-    }
+        classes.car.Car car2 = new classes.car.Car();
+        car2.setColor(enuns.Color.Red);
+        Date date3 = new Date(10L);
+        car2.setDate(date3);
+        car2.setFlax(true);
 
-    @Test
-    public void getCarTest(){
-        classes.car.Car actual = car.getCar();
-        Assert.fail("make your asserts here :)");
-    }
+        classes.genericclass.GenericClass<Object> genericclass4 = new classes.genericclass.GenericClass<Object>();
+        car2.setGenericClass(genericclass4);
 
-    @Test
-    public void getClassTest(){
-        java.lang.Class actual = car.getClass();
-        Assert.fail("make your asserts here :)");
-    }
 
-    @Test
-    public void getColorTest(){
-        enuns.Color actual = car.getColor();
-        Assert.fail("make your asserts here :)");
-    }
+        classes.genericclass.GenericClass<Object> genericclass25 = new classes.genericclass.GenericClass<Object>();
+        genericclass25.setName("test");
+        genericclass25.setPerformance(2.1);
+        car2.setGenericClass2(genericclass25);
 
-    @Test
-    public void getDateTest(){
-        java.util.Date actual = car.getDate();
-        Assert.fail("make your asserts here :)");
-    }
+        car2.setName("Trem que pula");
+        car2.setNumberWeels(999);
+        car2.setPrice(33.44);
+        car.setCar(car2);
 
-    @Test
-    public void getFlaxTest(){
-        java.lang.Boolean actual = car.getFlax();
-        Assert.fail("make your asserts here :)");
-    }
+        car.setColor(enuns.Color.Blue);
+        Date date6 = new Date(12542200L);
+        car.setDate(date6);
+        car.setFlax(false);
+        Map<classes.foo.Foo,classes.bar.Bar> map7 = new java.util.HashMap<classes.foo.Foo,classes.bar.Bar>();
+        classes.foo.Foo foo8 = new classes.foo.Foo();
+        foo8.setTicarica("ticaricatica");
+        classes.bar.Bar bar9 = new classes.bar.Bar();
+        map7.put(foo8,bar9);
+        car.setFooBar(map7);
+        Set<classes.foo.Foo>fooset10 = new java.util.HashSet<classes.foo.Foo>();
+        classes.foo.Foo foo11 = new classes.foo.Foo();
+        DateTime dateTime12 = new DateTime(222L, DateTimeZone.forID("America/Sao_Paulo"));
+        foo11.setDateTime(dateTime12);
+        foo11.setTicarica("curupaaaaco! kk");
+        fooset10.add(foo11);
+        classes.foo.Foo foo13 = new classes.foo.Foo();
+        fooset10.add(foo13);
+        car.setFooSet(fooset10);
 
-    @Test
-    public void getFooBarTest(){
-        java.util.Map actual = car.getFooBar();
-        Assert.fail("make your asserts here :)");
-    }
 
-    @Test
-    public void getFooSetTest(){
-        java.util.Set actual = car.getFooSet();
-        Assert.fail("make your asserts here :)");
-    }
 
-    @Test
-    public void getGearTest(){
-        classes.gear.Gear actual = car.getGear();
-        Assert.fail("make your asserts here :)");
-    }
+        classes.gear.Gear gear14 = new classes.gear.Gear();
+        gear14.setNumberOfTeeth(10);
+        gear14.setSize(1.1);
+        gear14.setSizeFit(15.261);
+        car.setGear(gear14);
 
-    @Test
-    public void getGearsTest(){
-        java.util.List actual = car.getGears();
-        Assert.fail("make your asserts here :)");
-    }
+        List<classes.gear.Gear>gears15 = new java.util.LinkedList<classes.gear.Gear>();
+        classes.gear.Gear gear16 = new classes.gear.Gear();
+        gear16.setNumberOfTeeth(10);
+        gear16.setSize(1.1);
+        gear16.setSizeFit(15.261);
+        gears15.add(gear16);
+        classes.gear.Gear gear17 = new classes.gear.Gear();
+        gears15.add(gear17);
+        car.setGears(gears15);
 
-    @Test
-    public void getGenericClassTest(){
-        classes.genericclass.GenericClass actual = car.getGenericClass();
-        Assert.fail("make your asserts here :)");
-    }
 
-    @Test
-    public void getGenericClass2Test(){
-        classes.genericclass.GenericClass actual = car.getGenericClass2();
-        Assert.fail("make your asserts here :)");
-    }
+        car.setName("Carro");
+        car.setNumberWeels(4);
+        car.setPrice(22.11);
+        List<java.lang.Object>whatever18 = new java.util.ArrayList<java.lang.Object>();
+        whatever18.add("abacate");
+        classes.gear.Gear gear20 = new classes.gear.Gear();
+        whatever18.add(gear20);
+        whatever18.add(42);
+        car.setWhatever(whatever18);
 
-    @Test
-    public void getNameTest(){
-        java.lang.String actual = car.getName();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getNumberWeelsTest(){
-        java.lang.Integer actual = car.getNumberWeels();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getPriceTest(){
-        java.lang.Double actual = car.getPrice();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getQueueTest(){
-        java.util.Queue actual = car.getQueue();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void getSomethingTest(){
-    }
-
-    @Test
-    public void getStaticCarTest(){
-    }
-
-    @Test
-    public void getWhateverTest(){
-        java.util.List actual = car.getWhatever();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void hashCodeTest(){
-        int actual = car.hashCode();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
-    public void toStringTest(){
-        java.lang.String actual = car.toString();
-        Assert.fail("make your asserts here :)");
-    }
 

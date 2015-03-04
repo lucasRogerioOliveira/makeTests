@@ -89,12 +89,6 @@
     }
 
     @Test
-    public void getPairTest(){
-        javafx.util.Pair actual = car.getPair();
-        Assert.fail("make your asserts here :)");
-    }
-
-    @Test
     public void getPriceTest(){
         java.lang.Double actual = car.getPrice();
         Assert.fail("make your asserts here :)");
