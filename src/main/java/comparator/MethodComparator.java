@@ -1,9 +1,7 @@
-package comparator;
+ package comparator;
 
 import java.lang.reflect.Method;
 import java.util.Comparator;
-
-import utils.ComparatorUtils;
 
 public class MethodComparator implements Comparator<Method>{
 

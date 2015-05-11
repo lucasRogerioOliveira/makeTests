@@ -3,8 +3,6 @@ package comparator;
 import java.lang.reflect.Field;
 import java.util.Comparator;
 
-import utils.ComparatorUtils;
-
 public class FieldComparator implements Comparator<Field>{
 
 	public int compare(Field f1, Field f2) {

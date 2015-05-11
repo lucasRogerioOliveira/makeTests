@@ -28,13 +28,23 @@ import comparator.ObjectComparator;
 public class MakeTests {
 
 	private static Object objectFather = null;
-	private static Integer numberOfRecursons = 0;
+	private static Integer numberOfRecursions = 0;
 	private static Set<String> imports = new HashSet<String>();
 	private static Set<Object> statics = new HashSet<Object>();
 	private final static String ESP = "    "; //1*4
 	private final static String ESP2 = "        "; //2*4
+	
+	private static void init(){
+		objectFather = null;
+		numberOfRecursions = 0;
+		imports = new HashSet<String>();
+		statics = new HashSet<Object>();
+//		imports.clear();
+//		statics.clear();
+	}
 
 	public static String makeSettersWith(Object object, boolean withMethodsAsserts) throws IOException, IllegalArgumentException, IllegalAccessException{
+		init();
 		Class<?> clazz = object.getClass();
 		StringBuilder sb = new StringBuilder();
 		String cn = clazz.getName().substring(clazz.getName().lastIndexOf(".") + 1);
@@ -121,30 +131,35 @@ public class MakeTests {
 		return true;
 	}
 
-	public static String makeSetters(Object object, String nameObj) throws IllegalArgumentException, IllegalAccessException{
+	private static String makeSetters(Object object, String nameObj) throws IllegalArgumentException, IllegalAccessException{
 		StringBuilder sb = new StringBuilder();
-		if (object != null){
-			if (objectFather == null){
-				objectFather = object;
-			}			
-			Class<?> clazz = object.getClass();
-			if (nameObj == null){ 
-				nameObj = getClassName(clazz).toLowerCase();
-			}
-			imports.add(object.getClass().getName());
-			
-			List<Field> fields = Arrays.asList(clazz.getDeclaredFields());		
-			Collections.sort(fields, new FieldComparator());
-			Set<String> methods = getMethodsNames(clazz);
-			for(Field f : fields){
-				f.setAccessible(true);
-				if (f.get(object) != null && methods.contains("set" + capitalize(f.getName()))){
-					sb.append(buildWithTypeOfObject(f.getType(), f, object, nameObj));
+		try {
+			if (object != null){
+				if (objectFather == null){
+					objectFather = object;
+				}			
+				Class<?> clazz = object.getClass();
+				if (nameObj == null){ 
+					nameObj = getClassName(clazz).toLowerCase();
+				}
+				imports.add(object.getClass().getName());
+				
+				List<Field> fields = Arrays.asList(clazz.getDeclaredFields());		
+				Collections.sort(fields, new FieldComparator());
+				Set<String> methods = getMethodsNames(clazz);
+				//... continuação ... 
+				for(Field f : fields){
+					f.setAccessible(true);
+					if (f.get(object) != null && methods.contains("set" + capitalize(f.getName()))){
+						sb.append(buildWithTypeOfObject(f.getType(), f, object, nameObj));
+					}
+				}
+				if (object == objectFather){
+					numberOfRecursions = 0;
 				}
 			}
-			if (object == objectFather){
-				numberOfRecursons = 0;
-			}
+		} catch (Exception e){
+			System.out.println(e.getMessage());
 		}
 		return sb.toString();
 	}
@@ -166,7 +181,7 @@ public class MakeTests {
 		} else if (Arrays.asList(clazz.getInterfaces()).contains(Collection.class)){
 			Collection<?> collection = (Collection<?>) f.get(object);
 			if (collection != null && !collection.isEmpty()){
-				String listName = (f.getName() + (++numberOfRecursons).toString()).toLowerCase(); 
+				String listName = (f.getName() + (++numberOfRecursions).toString()).toLowerCase(); 
 				String typeOfList = getTypeOfCollection(collection).getName();
 				String instance = getInterfaceOfCollection(collection);
 				imports.add("java.util." + instance);
@@ -174,8 +189,8 @@ public class MakeTests {
 				List<Object> ordenedList = new LinkedList<Object>(collection);
 				Collections.sort(ordenedList, new ObjectComparator());
 				for(Object objOfList : ordenedList){
-					String className = objOfList.getClass().getName();
-					String fieldName = (getClassName(objOfList.getClass()) + (++numberOfRecursons).toString()).toLowerCase();
+					String className = objOfList.getClass().getName();					
+					String fieldName = (getClassName(objOfList.getClass()) + (++numberOfRecursions).toString()).toLowerCase();
 //					sb.append(writeBisicInformations(objOfList, fieldName));
 					if (isAlpha(objOfList)){
 						sb.append(ESP2 + listName + ".add(" + '"' + objOfList  + '"' + ");\n");
@@ -223,16 +238,16 @@ public class MakeTests {
 				Entry<Class<?>, Class<?>> entry = getTypeOfMap(map);
 				String keyName = entry.getKey().getName();
 				String valueName = entry.getValue().getName();
-				String nameMap = "map" + (++numberOfRecursons).toString();
+				String nameMap = "map" + (++numberOfRecursions).toString();
 				sb.append(ESP2 + "Map<" + keyName + "," + valueName + "> " + nameMap +  " = new " + map.getClass().getName() + "<" + keyName + "," + valueName + ">();\n");
 				MapComparator mc = new MapComparator(map);
 				TreeMap<Object,Object> sortedMap = new TreeMap<Object, Object>(mc);
 				sortedMap.putAll(map);
 				for(Entry<?, ?> e : sortedMap.entrySet()){
 					Object k = e.getKey();
-					String kObjName = getClassName(k.getClass()).toLowerCase() + (++numberOfRecursons).toString();
+					String kObjName = getClassName(k.getClass()).toLowerCase() + (++numberOfRecursions).toString();
 					Object v = e.getValue();
-					String vObjName = getClassName(v.getClass()).toLowerCase() + (++numberOfRecursons).toString();
+					String vObjName = getClassName(v.getClass()).toLowerCase() + (++numberOfRecursions).toString();
 					sb.append(writeBisicInformations(k, kObjName));
 					sb.append(writeBisicInformations(v, vObjName));
 					sb.append(ESP2 + nameMap + ".put(" + kObjName + "," + vObjName + ");\n");
@@ -240,15 +255,16 @@ public class MakeTests {
 				sb.append(ESP2 + nameObj + "." + setFieldName + "(" + nameMap + ");\n");
 			}
 		} else if (isDate(clazz) && f.get(object) != null){
-			String nameField = f.getName() + (++numberOfRecursons).toString();
+			String nameField = f.getName() + (++numberOfRecursions).toString();
 			sb.append(getDate(f.get(object), nameField) );
 			sb.append(ESP2 + nameObj + "." + setFieldName + "(" + nameField + ");\n");
 		} else if (!isBasicTypes(clazz)){
 			if (f.get(object) != null){
 				String filedClassNameAndPackage = f.get(object).getClass().getName(); 
-				String fieldClassName = f.getName() + (++numberOfRecursons).toString();
+				String fieldClassName = f.getName() + (++numberOfRecursions).toString();
 				String typesParams = getTypeParameters(f.get(object).getClass());
 				if(!fieldClassName.equals(capitalize(nameObj))){
+					
 					sb.append("\n" + ESP2 + filedClassNameAndPackage + typesParams +  " " + fieldClassName.toLowerCase() + " = new " + filedClassNameAndPackage + typesParams + "();\n");
 					sb.append(makeSetters(f.get(object), fieldClassName.toLowerCase()));
 					sb.append(ESP2 + nameObj + "." + setFieldName + "(" + fieldClassName.toLowerCase()  + ");\n\n");
