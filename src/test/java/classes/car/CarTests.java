@@ -187,4 +187,114 @@ public class CarTests {
 
     }
 
+    @Test
+    public void getCalendarTest(){
+        java.util.Calendar actual = car.getCalendar();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getCarTest(){
+        classes.car.Car actual = car.getCar();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getColorTest(){
+        enuns.Color actual = car.getColor();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getDateTest(){
+        java.util.Date actual = car.getDate();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getFlaxTest(){
+        java.lang.Boolean actual = car.getFlax();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getFooBarTest(){
+        java.util.Map actual = car.getFooBar();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getFooSetTest(){
+        java.util.Set actual = car.getFooSet();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getGearTest(){
+        classes.gear.Gear actual = car.getGear();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getGearsTest(){
+        java.util.List actual = car.getGears();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getGenericClassTest(){
+        classes.genericclass.GenericClass actual = car.getGenericClass();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getGenericClass2Test(){
+        classes.genericclass.GenericClass actual = car.getGenericClass2();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getNameTest(){
+        java.lang.String actual = car.getName();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getNumberWeelsTest(){
+        java.lang.Integer actual = car.getNumberWeels();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getPriceTest(){
+        java.lang.Double actual = car.getPrice();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getQueueTest(){
+        java.util.Queue actual = car.getQueue();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void getSomethingTest(){
+    }
+
+    @Test
+    public void getStaticCarTest(){
+    }
+
+    @Test
+    public void getWhateverTest(){
+        java.util.List actual = car.getWhatever();
+        Assert.fail("make your asserts here :)");
+    }
+
+    @Test
+    public void hashCodeTest(){
+        int actual = car.hashCode();
+        Assert.fail("make your asserts here :)");
+    }
+
 }
