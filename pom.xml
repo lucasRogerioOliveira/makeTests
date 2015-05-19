@@ -2,11 +2,14 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
   <groupId>makeTests</groupId>
-  <artifactId>br.com</artifactId>
+  <artifactId>makeTests</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
   <name>MakeTests</name>
-  <description>Do your tests from witch a simple "makeTestsWith"</description>
+  
+  <description>Do your tests witch a simple &quot;makeTestsWith&quot;</description>
   
   <dependencies>
   
@@ -40,12 +43,7 @@
 		<version>2.4.3</version>
 	</dependency>
 	
-	<dependency>
-		<groupId>dbunit</groupId>
-		<artifactId>dbunit</artifactId>
-		<version>2.2</version>
-	</dependency>
 	
   </dependencies>
-  
+ 
 </project>

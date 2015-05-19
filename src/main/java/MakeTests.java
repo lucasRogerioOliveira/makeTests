@@ -29,6 +29,7 @@ public class MakeTests {
 
 	private static Object objectFather = null;
 	private static Integer numberOfRecursions = 0;
+	private static Map<Integer, String> hashCodes = new TreeMap<Integer, String>();    
 	private static Set<String> imports = new HashSet<String>();
 	private static Set<Object> statics = new HashSet<Object>();
 	private final static String ESP = "    "; //1*4
@@ -37,6 +38,7 @@ public class MakeTests {
 	private static void init(){
 		objectFather = null;
 		numberOfRecursions = 0;
+		hashCodes.clear();
 		imports.clear();
 		statics.clear();
 	}
@@ -122,7 +124,7 @@ public class MakeTests {
 		String pathStr = MakeTests.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("target", "src/test/java");
 		pathStr = pathStr.substring(0,pathStr.indexOf("src/test/java") + 13) + "/" + packageName.replace(".", "/") + "/";
 		//		String path = System.getProperty("user.dir") + "src\test\java";
-		File f = new File(pathStr);
+		File f = new File(pathStr + className + "Tests.java");
 		if (!f.exists()){
 			boolean maked = f.mkdirs();
 			if (maked){
@@ -135,18 +137,24 @@ public class MakeTests {
 		//		String lines = joinStringArray((String[]) Files.readAllLines(path).toArray());
 		return true;
 	}
-
+	
 	private static String makeSetters(Object object, String nameObj) throws IllegalArgumentException, IllegalAccessException{
 		StringBuilder sb = new StringBuilder();
 		try {
 			if (object != null){
 				if (objectFather == null){
 					objectFather = object;
-				}			
+				}
 				Class<?> clazz = object.getClass();
 				if (nameObj == null){ 
 					nameObj = getClassName(clazz).toLowerCase();
 				}
+				//a validação pode ser colocada apenas aqui pois um hash de uma "String" não irá causar redundância cíclica
+				if(!hashCodes.containsKey(object.hashCode())){
+					hashCodes.put(object.hashCode(), nameObj);
+				} else {
+					return hashCodes.get(object.hashCode());
+				}				
 				imports.add(object.getClass().getName());
 				if(isCollectionOrMap(object.getClass())){
 					if (Arrays.asList(clazz.getInterfaces()).contains(Map.class)){
@@ -231,9 +239,14 @@ public class MakeTests {
 					getDate(objOfList, fieldName);
 					sb.append(ESP2 + listName + ".add(" + fieldName + ";\n");
 				} else {
-					sb.append(ESP2 + className + " " + fieldName + " = new " + className + "();\n");
-					sb.append(makeSetters(objOfList, fieldName));
-					sb.append(ESP2 + listName + ".add(" + fieldName + ");\n");
+					if(!hashCodes.containsKey(objOfList.hashCode())){					
+						sb.append(ESP2 + className + " " + fieldName + " = new " + className + "();\n");
+						sb.append(makeSetters(objOfList, fieldName));
+						sb.append(ESP2 + listName + ".add(" + fieldName + ");\n");
+					} else {
+						sb.append(ESP2 + listName + ".add(" + hashCodes.get(objOfList.hashCode()) + ");\n");
+					}
+					
 				}
 			}
 			if (fatherName != null){
@@ -275,10 +288,13 @@ public class MakeTests {
 				String fieldClassName = f.getName() + (++numberOfRecursions).toString();
 				String typesParams = getTypeParameters(f.get(object).getClass());
 				if(!fieldClassName.equals(capitalize(nameObj))){
-					
-					sb.append("\n" + ESP2 + filedClassNameAndPackage + typesParams +  " " + fieldClassName.toLowerCase() + " = new " + filedClassNameAndPackage + typesParams + "();\n");
-					sb.append(makeSetters(f.get(object), fieldClassName.toLowerCase()));
-					sb.append(ESP2 + nameObj + "." + setFieldName + "(" + fieldClassName.toLowerCase()  + ");\n\n");
+					if(!hashCodes.containsKey(f.get(object).hashCode())){
+						sb.append("\n" + ESP2 + filedClassNameAndPackage + typesParams +  " " + fieldClassName.toLowerCase() + " = new " + filedClassNameAndPackage + typesParams + "();\n");
+						sb.append(makeSetters(f.get(object), fieldClassName.toLowerCase()));
+						sb.append(ESP2 + nameObj + "." + setFieldName + "(" + fieldClassName.toLowerCase()  + ");\n\n");
+					} else {
+						sb.append(ESP2 + nameObj + "." + setFieldName + "(" + hashCodes.get(f.get(object).hashCode())  + ");\n\n");
+					}
 				}
 			}
 		} else {
@@ -362,6 +378,7 @@ public class MakeTests {
 				Calendar calendar = (Calendar) obj;
 				sb.append(ESP2 + "//sorry, but a can't get the Locale =(\n");
 				sb.append(ESP2 + "Calendar " + objName + " = Calendar.getInstance(TimeZone.getTimeZone(" + '"' + calendar.getTimeZone().getID() + '"' + "));\n");
+				sb.append(ESP2 + objName + ".setTimeInMillis(" + calendar.getTimeInMillis() + "L);");
 			} else if (obj.getClass().equals(DateTime.class)){
 				imports.add("org.joda.time.DateTime");
 				imports.add("org.joda.time.DateTimeZone");

@@ -2,20 +2,10 @@ package mymap;
 
 public class MyMap<D,T,R,K> {
 	
-	private static int id;
 	private T fieldT;
 	private D fieldD;
 	private R fieldR;
 	private R fieldK;
-	
-	public MyMap(){
-		id++;
-	}
-	
-	@Override
-	public int hashCode(){
-		return id;
-	}
 	
 	public T getFieldT() {
 		return fieldT;

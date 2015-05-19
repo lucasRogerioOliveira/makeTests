@@ -29,7 +29,7 @@ public class H2DatabaseTests {
 	
 	@Test
 	public void makeResultSetInformationSchemaTablesTest() throws SQLException, IllegalAccessException, IOException{
-        System.out.println(MakeTests.makeSettersWith(informationsSchemaTable, "InformationsSchemaTableTest", false));
+//        System.out.println(MakeTests.makeSettersWith(informationsSchemaTable, "InformationsSchemaTableTest", false));
 	}
 	
 	

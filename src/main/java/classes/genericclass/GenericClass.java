@@ -2,18 +2,8 @@ package classes.genericclass;
 
 public class GenericClass<T> {
 	
-	private static int id;
 	private String name;
 	private Double performance;
-	
-	public GenericClass(){
-		id++;
-	}
-	
-	@Override
-	public int hashCode(){
-		return id;
-	}
 	
 	public String getName() {
 		return name;

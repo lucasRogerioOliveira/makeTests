@@ -40,10 +40,10 @@ public class MakeTestsTests {
 		car.setNumberWeels(4);
 		car.setDate(new Date(12542200L));
 		
-		Foo fooPair = new Foo();
-		fooPair.setTicarica("it's be end?");
-		Bar barPair = new Bar();
-		barPair.setDate(new Date(1555L));
+//		Foo fooPair = new Foo();
+//		fooPair.setTicarica("it's be end?");
+//		Bar barPair = new Bar();
+//		barPair.setDate(new Date(1555L));
 //		car.setPair(new Pair<Foo,Bar>(fooPair,barPair));
 		
 		Locale locale = new Locale("pt", "BR");
@@ -111,11 +111,12 @@ public class MakeTestsTests {
 		gear.setSizeFit(15.261);
 		gears.add(gear);
 		gears.add(gear2);
-		car.setGears(gears);
-		
+
 		Car.setSomething("something nice ;)");
 		
 		Car.setStaticCar(car);
+		
+		car.setGears(gears);
 	}
 	
 	
