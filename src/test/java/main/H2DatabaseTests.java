@@ -1,3 +1,4 @@
+package main;
 import static org.junit.Assert.assertTrue;
 import informationschema.tables.InformationSchemaModel;
 import informationschema.tables.InformationSchemaTableDto;

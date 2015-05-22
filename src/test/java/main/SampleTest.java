@@ -1,3 +1,4 @@
+package main;
 
 //public class SampleTest extends DBTestCase
 public class SampleTest {

@@ -1,3 +1,4 @@
+package main;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -29,7 +30,7 @@ public class MakeTests {
 
 	private static Object objectFather = null;
 	private static Integer numberOfRecursions = 0;
-	private static Map<Integer, String> hashCodes = new TreeMap<Integer, String>();    
+	private static Map<Integer, String> hashCodes = new TreeMap<Integer, String>();
 	private static Set<String> imports = new HashSet<String>();
 	private static Set<Object> statics = new HashSet<Object>();
 	private final static String ESP = "    "; //1*4
@@ -67,8 +68,8 @@ public class MakeTests {
 			sb.append(generateMethods(methods, lcn));
 		}
 		sb.append("}\n");
-		saveOrUpdateFile(sb, packageName, cn);
-		return sb.toString();		
+		saveOrUpdateFile(sb, object, packageName, cn);
+		return sb.toString();
 	}
 	
 	
@@ -119,12 +120,12 @@ public class MakeTests {
 		}
 	}
 
-	public static boolean saveOrUpdateFile(StringBuilder sb, String packageName, String className) throws IOException{
+	public static boolean saveOrUpdateFile(StringBuilder sb, Object objectFather, String packageName, String className) throws IOException{
 		//		String path = MakeTests.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		String pathStr = MakeTests.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("target", "src/test/java");
+		String pathStr = objectFather.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("target", "src/test/java");
 		pathStr = pathStr.substring(0,pathStr.indexOf("src/test/java") + 13) + "/" + packageName.replace(".", "/") + "/";
 		//		String path = System.getProperty("user.dir") + "src\test\java";
-		File f = new File(pathStr + className + "Tests.java");
+		File f = new File(pathStr);
 		if (!f.exists()){
 			boolean maked = f.mkdirs();
 			if (maked){
@@ -149,12 +150,12 @@ public class MakeTests {
 				if (nameObj == null){ 
 					nameObj = getClassName(clazz).toLowerCase();
 				}
-				//a validação pode ser colocada apenas aqui pois um hash de uma "String" não irá causar redundância cíclica
+
 				if(!hashCodes.containsKey(object.hashCode())){
 					hashCodes.put(object.hashCode(), nameObj);
 				} else {
 					return hashCodes.get(object.hashCode());
-				}				
+				}
 				imports.add(object.getClass().getName());
 				if(isCollectionOrMap(object.getClass())){
 					if (Arrays.asList(clazz.getInterfaces()).contains(Map.class)){
@@ -166,7 +167,7 @@ public class MakeTests {
 				List<Field> fields = Arrays.asList(clazz.getDeclaredFields());		
 				Collections.sort(fields, new FieldComparator());
 				Set<String> methods = getMethodsNames(clazz);
-				//... continuação ... 
+ 
 				for(Field f : fields){
 					f.setAccessible(true);
 					if (f.get(object) != null && methods.contains("set" + capitalize(f.getName())) ){
