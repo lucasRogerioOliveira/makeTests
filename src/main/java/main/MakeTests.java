@@ -373,6 +373,10 @@ public class MakeTests {
 				imports.add(obj.getClass().getName());
 				java.util.Date date = (java.util.Date)obj;
 				sb.append(ESP2 + "Date " + objName + " = new Date(" + date.getTime() + "L);\n");				
+			} else if (obj.getClass().equals(java.sql.Timestamp.class)){
+				imports.add(obj.getClass().getName());
+				java.sql.Timestamp date = (java.sql.Timestamp)obj;
+				sb.append(ESP2 + "Timestamp " + objName + " = new Timestamp(" + date.getTime() + "L);\n");								
 			} else if (obj.getClass().isInstance(Calendar.class) || obj.getClass().getSuperclass().equals(Calendar.class)){
 				imports.add("java.util.TimeZone");
 				imports.add("java.util.Calendar");
@@ -385,6 +389,8 @@ public class MakeTests {
 				imports.add("org.joda.time.DateTimeZone");
 				DateTime dt = (DateTime)obj;
 				sb.append(ESP2 + "DateTime " + objName + " = new DateTime(" + 	dt.getMillis() + "L, DateTimeZone.forID(" + '"' + dt.getZone().getID()  + '"' + "));\n");
+			} else {
+				sb.append(ESP2 + "//This tipe of date is not implemented yet");
 			}
 		}
 		return sb.toString();
