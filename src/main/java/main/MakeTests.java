@@ -48,14 +48,15 @@ public class MakeTests {
 		init();
 		Class<?> clazz = object.getClass();
 		StringBuilder sb = new StringBuilder();
-		String cn = nameTestClass == null ? clazz.getName().substring(clazz.getName().lastIndexOf(".") + 1) : nameTestClass;
+		String cn = clazz.getName().substring(clazz.getName().lastIndexOf(".") + 1);
+		nameTestClass = nameTestClass == null ? cn : nameTestClass;  
 		String lcn = cn.toLowerCase();
 		String setters = makeSetters(object, null);
 		String packageName = object.getClass().getPackage().getName();
 		sb.append("package " + packageName + ";\n");
 		sb.append(getImports());
 		sb.append("\n\n");
-		sb.append("public class " + cn + "Tests {\n\n\n");
+		sb.append("public class " + nameTestClass + "Tests {\n\n\n");
 		if (!isCollectionOrMap(object.getClass())){
 			sb.append(ESP + "private " + cn + " " + lcn + " = new " + cn + "();\n\n");
 		}
@@ -68,7 +69,7 @@ public class MakeTests {
 			sb.append(generateMethods(methods, lcn));
 		}
 		sb.append("}\n");
-		saveOrUpdateFile(sb, object, packageName, cn);
+		saveOrUpdateFile(sb, object, packageName, nameTestClass);
 		return sb.toString();
 	}
 	
@@ -95,7 +96,7 @@ public class MakeTests {
 		return sb.toString();
 	}
 
-	public static String getImports(){
+	private static String getImports(){
 		StringBuilder sb = new StringBuilder("import org.junit.Test;\n");
 		sb.append("import org.junit.Before;\n");
 		sb.append("import org.junit.Assert;\n");
@@ -126,8 +127,8 @@ public class MakeTests {
 		pathStr = pathStr.substring(0,pathStr.indexOf("src/test/java") + 13) + "/" + packageName.replace(".", "/") + "/";
 		//		String path = System.getProperty("user.dir") + "src\test\java";
 		File f = new File(pathStr);
-		if (!f.exists()){
-			boolean maked = f.mkdirs();
+		if (!new File(pathStr + className + "Tests.java").exists()){
+			boolean maked = f.exists() || f.mkdirs();
 			if (maked){
 				BufferedWriter writer = new BufferedWriter(new FileWriter(pathStr + className + "Tests.java"));
 				writer.write(sb.toString());
